@@ -222,15 +222,17 @@ class EventController extends Controller
 
             $updatedCollection = $repeatableEvents->where('day', '=', $dayName)
                 ->map(function($element) use ($dateTime, $editedEvents) {
-                if ($editedEvents->filter(function ($model) use ($dateTime, $element) {
-                        return $model->evento_id == $element->id && $model->fecha_inicio->equalTo($dateTime->format('Y-m-d'));
+                    $elementCopy = clone $element;
+
+                    if ($editedEvents->filter(function ($model) use ($dateTime, $elementCopy) {
+                        return $model->evento_id == $elementCopy->id && $model->fecha_inicio->equalTo($dateTime->format('Y-m-d'));
                     })->count() > 0) {
                     return null;
                 }else{
-                    $element['id'] = $element->event_id;
-                    $element['fecha_inicio'] = $dateTime->format('d-m-Y');
-                    $element['fecha_fin'] = $dateTime->format('d-m-Y');
-                    return $element;
+                    $elementCopy['id'] = $elementCopy->event_id;
+                    $elementCopy['fecha_inicio'] = $dateTime->format('d-m-Y');
+                    $elementCopy['fecha_fin'] = $dateTime->format('d-m-Y');
+                    return $elementCopy;
                 }
             })->filter(function($item) {
                 return $item !== null;
