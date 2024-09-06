@@ -21,7 +21,8 @@ class PhysicalAssessmentComposer
             $physicalAssessmentDates = $physicalAssessments->pluck('created_at')->map(function ($date) {
                 return Carbon::parse($date)->format('Y-m-d');
             });
-            $body_score = $physicalAssessments->last()->body_score;
+            //$body_score = $physicalAssessments->last()->body_score;
+            $body_age = $physicalAssessments->last()->body_age;
 
             $datasets = [
                 [
@@ -42,6 +43,7 @@ class PhysicalAssessmentComposer
                     'backgroundColor' => 'rgba(54, 162, 235, 1)',
                     'borderColor' => 'rgba(54, 162, 235, 1)',
                 ],
+                /*
                 [
                     'label' => 'Water Level',
                     'data' => $physicalAssessments->pluck('water_level'),
@@ -55,26 +57,19 @@ class PhysicalAssessmentComposer
                     'borderColor' => 'rgba(153, 102, 255, 1)',
                 ],
                 [
-                    'label' => 'Basal Metabolism',
-                    'data' => $physicalAssessments->pluck('basal_metabolism')->map(function ($value) {
-                        return $value / 1000;
-                    }),
-                    'backgroundColor' => 'rgba(255, 159, 64, 1)',
-                    'borderColor' => 'rgba(255, 159, 64, 1)',
-                ],
-                [
                     'label' => 'Bone Mass',
                     'data' => $physicalAssessments->pluck('bone_mass'),
                     'backgroundColor' => 'rgba(255, 99, 132, 1)',
                     'borderColor' => 'rgba(255, 99, 132, 1)',
                 ],
+                */
             ];
 
             $view->with([
                 'physicalAssessments' => $physicalAssessments,
                 'physicalAssessmentDates' => $physicalAssessmentDates->toJson(),
                 'datasets' => $datasets,
-                'body_score' => $body_score,
+                'body_age' => $body_age,
             ]);
         }
     }

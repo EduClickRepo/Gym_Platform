@@ -8,6 +8,7 @@ use App\ExercisePrescription;
 use App\FitnessComponent;
 use App\MaxHeartRate;
 use App\NutritionAndHealth;
+use App\PhysicalAssessment;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -44,6 +45,10 @@ class Cliente extends Model
 
     public function peso(){
         return $this->pesos('desc')->first();
+    }
+
+    public function body_age(){
+        return $this->hasMany(PhysicalAssessment::class, 'user_id', 'usuario_id')->orderBy('created_at', 'desc')->first()?->body_age;
     }
 
     public function anthropometries($order = 'asc')

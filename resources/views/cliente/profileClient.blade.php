@@ -91,11 +91,20 @@
                     @endif
                     @if($user->cliente?->estatura())
                         <p><strong>Estatura: </strong>{{number_format($user->cliente->estatura()->estatura/100, 2)}} m</p>
-                        <div class="contador-container mt-3">
-                            <div class="numero-contador-container">
-                                <h2 class="counter-count-decimal">{{number_format($user->cliente->peso()->peso/(($user->cliente->estatura()->estatura/100)**2), 2)}}</h2>
+
+                        <div class="d-flex flex-column flex-lg-row  m-auto justify-content-around">
+                            <div class="contador-container mt-3 mx-auto">
+                                <div class="numero-contador-container">
+                                    <h2 class="counter-count-decimal">{{number_format($user->cliente->peso()->peso/(($user->cliente->estatura()->estatura/100)**2), 2)}}</h2>
+                                </div>
+                                <h4>IMC</h4>
                             </div>
-                            <h4>IMC</h4>
+                            <div class="contador-container mt-3 mx-auto">
+                                <div class="numero-contador-container">
+                                    <h2 class="counter-count-decimal">{{$user->cliente->body_age() ?? '-'}}</h2>
+                                </div>
+                                <h4>Body Age</h4>
+                            </div>
                         </div>
                     @endif
 

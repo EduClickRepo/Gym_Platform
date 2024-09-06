@@ -47,6 +47,7 @@ class WellBeingController extends controller
             $physicalAssessment->basal_metabolism = $request->basal_metabolism;
             $physicalAssessment->bone_mass = $request->bone_mass;
             $physicalAssessment->body_score = $request->body_score;
+            $physicalAssessment->body_age = $request->body_age;
             $physicalAssessment->save();
 
             $peso = new Peso();

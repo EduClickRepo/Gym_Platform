@@ -3,13 +3,14 @@
     <form id="physicalForm">
         @csrf
         <x-input name="weight" description="Peso (Kg)" type="number" required step=".01"></x-input>
-        <x-input name="body_fat" description="Grasa Corporal" type="number" required step=".01"></x-input>
-        <x-input name="muscle" description="Músculo" type="number" required step=".01"></x-input>
-        <x-input name="visceral_fat" description="Grasa Visceral" type="number" required step=".01"></x-input>
+        <x-input name="body_fat" description="Body Fat" type="number" required step=".01"></x-input>
+        <x-input name="muscle" description="Muscle" type="number" required step=".01"></x-input>
+        <x-input name="basal_metabolism" description="RM Kcal:" type="number" required step=".01"></x-input>
+        <x-input name="body_age" description="Body Age" type="number" required step="1"></x-input>
+        <x-input name="visceral_fat" description="Visceral Fat" type="number" required step="1"></x-input>
 
         <!--<x-input name="water_level" description="Nivel agua:" type="number" required step=".01"></x-input>-->
         <!--<x-input name="proteins" description="Proteínas:" type="number" required step=".01"></x-input>-->
-        <x-input name="basal_metabolism" description="Metabolismo Basal:" type="number" required step=".01"></x-input>
         <!--<x-input name="bone_mass" description="Masa Ósea:" type="number" required step=".01"></x-input>-->
         <!--<x-input name="body_score" description="Puntuación Corporal:" type="number" required step=".01"></x-input>-->
         <div class="d-flex justify-content-between">
@@ -56,6 +57,7 @@
                     bone_mass: document.getElementById('bone_mass')?.value,
                     body_score: document.getElementById('body_score')?.value,
                     weight : document.getElementById('weight')?.value,
+                    body_age: document.getElementById('body_age')?.value,
                 },
                 success: handleAjaxResponse,
                 error: handleAjaxResponse
