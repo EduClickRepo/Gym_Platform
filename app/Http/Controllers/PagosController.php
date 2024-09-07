@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Model\SesionCliente;
 use App\Model\TransaccionesPagos;
 use App\Model\TransaccionesPendientes;
+use App\PaymentMethod;
 use App\Utils\PayTypesEnum;
+use App\Utils\PaymentMethodsEnum;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -149,7 +151,8 @@ class PagosController extends Controller
         $transaction->data = $request->data ?? "";
         $transaction->user_id = $request->clientId;
         $transaction->created_at = $payDay;
-        $transaction->amount = $request->amount;
+        $paymentMethod = PaymentMethod::find($request->paymentMethodId);
+        $transaction->amount = strcasecmp( $paymentMethod->name, PaymentMethodsEnum::ACCOUNT_PAYABLE->value) == 0 ? -1*abs($request->amount) : $request->amount;
         $transaction->is_petty_cash = 1;
         $transaction->save();
 
