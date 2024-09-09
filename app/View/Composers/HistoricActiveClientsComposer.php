@@ -4,22 +4,35 @@ namespace App\View\Composers;
 
 use App\HistoricalActiveClient;
 use Illuminate\View\View;
+use App\Traits\DateRangeTrait;
 
 class HistoricActiveClientsComposer
 {
+
+    use DateRangeTrait;
+
     /**
      * Bind data to the view.
      */
     public function compose(View $view): void
     {
-        $historicalData = HistoricalActiveClient::orderBy('date')->get();
+        $request = request();
+        [$startDate, $endDate] = $this->getDateRange($request);
+
+        $historicalData = HistoricalActiveClient::
+            when($startDate, function ($query, $startDate){
+                $query->where('date', '>=', $startDate->startOfDay());
+            })
+            ->when($endDate, function ($query, $endDate){
+                $query->where('date', '<=', $endDate->endOfDay());
+            })
+            ->orderBy('date')->get();
 
         $activeClientsData = $historicalData->pluck('active_clients');
         $activeNewClientsData = $historicalData->pluck('active_new_clients');
         $activeOldClientsData = $historicalData->pluck('active_old_clients');
-        $dates = $historicalData->pluck('date')->toJson();
 
-        $datasets = [
+        $activeClientsDatasets = [
             [
                 'label' => 'Historico clientes activos',
                 'data' => $activeClientsData,
@@ -43,9 +56,35 @@ class HistoricActiveClientsComposer
             ],
         ];
 
+        $retainedClientsData = $historicalData->pluck('retained_clients');
+        $retainedClientsDataset = [
+            [
+                'label' => 'Historico clientes retenidos',
+                'data' => $retainedClientsData,
+                'backgroundColor' => 'rgba(75, 192, 192, 0.2)',
+                'borderColor' => 'rgba(75, 192, 192, 1)',
+                'borderWidth' => 1,
+            ],
+        ];
+
+        $percentRetainedClientsData = $historicalData->pluck('percent_retained_clients');
+        $percentRetainedClientsDataset = [
+            [
+                'label' => 'Historico porcentaje clientes retenidos',
+                'data' => $percentRetainedClientsData,
+                'backgroundColor' => 'rgba(255, 159, 64, 0.2)',
+                'borderColor' => 'rgba(255, 159, 64, 1)',
+                'borderWidth' => 1,
+            ],
+        ];
+
+        $dates = $historicalData->pluck('date')->toJson();
+
         $view->with([
-            'labels' => $dates,
-            'datasets' => $datasets,
+            'dates' => $dates,
+            'activeClientsDatasets' => $activeClientsDatasets,
+            'retainedClientsDataset' => $retainedClientsDataset,
+            'percentRetainedClientsDataset' => $percentRetainedClientsDataset,
         ]);
     }
 }

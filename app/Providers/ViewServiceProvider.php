@@ -89,8 +89,6 @@ class ViewServiceProvider extends ServiceProvider
         Facades\View::composer('highlightSection', HighLightComposer::class);
         Facades\View::composer('components.lastClasses', LatestClassesComposer::class);
         Facades\View::composer('components.historicActiveClients', HistoricActiveClientsComposer::class);
-        Facades\View::composer('components.historicActiveClients', HistoricRetainedClientsComposer::class);
-        Facades\View::composer('components.historicActiveClients', HistoricPercentRetainedClientsComposer::class);
         Facades\View::composer('achievements.achievementsResume', AchievementsComposer::class);
     }
 }
