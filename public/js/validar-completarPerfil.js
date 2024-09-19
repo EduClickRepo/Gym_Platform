@@ -73,9 +73,16 @@ $(document).ready(function(){
             channel:{
                 required: true,
             },
+            estatura:{
+                required: true,
+                min: 100,
+            },
         },
         messages: {
-            radio: "This is a required field"
+            radio: "This is a required field",
+            estatura: {
+                min: "La estatura debe ser mayor o igual a 100 cm."
+            }
         },
 
         errorPlacement: function(error, element) {
