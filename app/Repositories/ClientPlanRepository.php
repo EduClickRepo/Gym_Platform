@@ -88,13 +88,13 @@ class ClientPlanRepository
         //FIT-107 Plan Morning
         if($clientPlan && $clientPlan->isNotEmpty()){
             $clientPlan = $clientPlan ->first();
-            if($clientPlan->plan_id != PlansEnum::MORNING->value || ($event && $event->start_hour < '11:00:00')){
-               return $clientPlan;
+            if($event && $event->start_hour > '11:00:00' && $clientPlan->plan_id == PlansEnum::MORNING->value){
+                Log::info('Trying to schedule an unsupported class with a morning plan');
+                Session::put('msg_level', 'danger');
+                Session::put('msg', __('general.upgrade_morning_plan'));
+                Session::save();
             }
-            Log::info('Trying to schedule an unsupported class with a morning plan');
-            Session::put('msg_level', 'danger');
-            Session::put('msg', __('general.upgrade_morning_plan'));
-            Session::save();
+            return $clientPlan;
         }
         return null;
     }

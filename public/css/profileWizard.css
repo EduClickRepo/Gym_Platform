@@ -263,9 +263,12 @@ h2.title {
 .wizard-card .wizard-footer .checkbox {
     margin-top: 16px;
 }
+/* This hides the past days from datepicker and causes wrong display
 .wizard-card .disabled {
     display: none;
 }
+*/
+
 .wizard-card .wizard-header {
     text-align: center;
     padding: 25px 0 35px;
