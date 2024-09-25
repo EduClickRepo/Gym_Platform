@@ -10,5 +10,8 @@
         @if($trainingPreferences->music)
             <p>Música: {{$trainingPreferences->music}}</p>
         @endif
+        @if($trainingPreferences->training_type)
+            <p>Deporte Favorito: {{$trainingPreferences->training_type}}</p>
+        @endif
     </div>
 @endif

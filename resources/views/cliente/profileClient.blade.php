@@ -56,6 +56,7 @@
 
                 <div class="themed-block col-12 col-md-10 mx-auto mt-4 p-2">
                     <p>Id: {{$user->id}}</p>
+                    <p>Madrina: {{$user->assigned?->nombre}}</p>
                     <p>Última valoración: {{$user->physicalAssessment?->created_at}}</p>
                     <p>Telefono: {{$user->telefono}}</p>
                     <p>Eps: {{$user->eps}}</p>
@@ -65,7 +66,7 @@
                     <p>Contacto de emergencia: {{$user->emergency_contact}}</p>
                     <p>Telefono de emergencia: {{$user->emergency_phone}}</p>
                     @if($user->cliente)
-                        <p>Objetivo: {{$user->cliente->objetive}}</p>
+                        <p>Objetivo: {{$user->cliente->objective}}</p>
                         <p>Patologías: {{$user->cliente->pathology}}</p>
                     @endif
                 </div>

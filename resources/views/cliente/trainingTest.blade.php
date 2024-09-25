@@ -26,6 +26,7 @@
             </div>
         </div>
         <x-input name="music" description="¿Con qué música te gusta entrenar?" type="text" required></x-input>
+        <x-input name="training_type" description="¿Algún tipo de deporte/entrenamiento preferido?" type="text"></x-input>
         <div class="d-flex justify-content-between">
             <button class="btn btn-danger mt-3 mx-auto" onclick="hideTrainingSection()">Quitar Sección de entrenamiento</button>
             <button class="btn themed-btn mt-3 mx-auto d-block" type="submit">Guardar Sección</button>
@@ -59,6 +60,7 @@
                     training_frequency : document.getElementById('training_frequency').value,
                     intensity: document.getElementById('training_intensity').value,
                     music: document.getElementById('music').value,
+                    training_type : document.getElementById('training_type').value,
                 },
 
                 success: handleAjaxResponse,

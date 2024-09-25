@@ -28,7 +28,7 @@
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Telefono</th>
-                <th>Padrino</th>
+                <th>Madrina</th>
                 <th>Acciones</th>
                 <th>Estado de valoracion</th>
                 <th>Tiene foto?</th>
@@ -128,10 +128,10 @@
         }
 
         // Función para actualizar el estado de asignación
-        function onChangeAssignment(userId, padrinoId) {
+        function onChangeAssignment(userId, godmotherId) {
             performAjaxRequest("{{ route('assigned.update') }}", {
                 userId: userId,
-                assigned: padrinoId
+                assigned: godmotherId
             });
         }
 

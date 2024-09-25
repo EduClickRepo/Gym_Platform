@@ -10,8 +10,8 @@
         <thead>
         <tr>
             <th>Fecha</th>
-
             <th>Evento</th>
+            <th>Asistió</th>
         </tr>
 
         </thead>
@@ -20,6 +20,7 @@
             <tr>
                 <td>{{ $session->fecha_inicio }}</td>
                 <td>{{ $session->event->nombre }}</td>
+                <td>{{ $session->attended == 1 ? 'Si' : 'No' }}</td>
             </tr>
         @endforeach
         </tbody>

@@ -4,5 +4,8 @@
         <p>Última Valoración: {{$physicalAssessments?->last()?->created_at?->format('Y-m-d')}}</p>
 
         <x-chart id="physicalChart" type="line" :labels="$physicalAssessmentDates" :datasets="$datasets"></x-chart>
+
+        <br/>
+        @include('assessmentResults.physicalAssessmentTable')
     </div>
 @endisset

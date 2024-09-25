@@ -170,4 +170,9 @@ class User extends Authenticatable
             ->get();
         return $specialPermission->isNotEmpty();
     }
+
+    public function getAssignedAttribute(): object|null
+    {
+        return User::find($this->assigned_id);
+    }
 }
