@@ -9,10 +9,6 @@
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
-
     <link href="{{asset('css/profileWizard.css')}}" rel="stylesheet"/>
 
     <!--datetimePicker-->
@@ -60,21 +56,22 @@
 
                         <div class="tab-content">
                             <div class="tab-pane" id="payment">
-                                <h4 class="info-text">¿Usuario? </h4>
+                                <br>
                                 <div class="row mt-2">
                                     <div class="m-auto w-100">
-                                        <div class="input-group col-10 col-md-5 m-auto">
-                                            <span class="iconos">
-                                                <i class="material-icons">people</i>
-                                            </span>
-                                            <div class="form-group label-floating">
-                                                <label class="control-label">Usuario <small>(requerido)</small></label>
-                                                <select class="form-control select2 bg-dark" id="clientId" name="clientId">
-                                                    <option style="color: black" value="" disabled selected>Usuario...</option>
-                                                    @foreach($clients as $client)
-                                                        <option value="{{$client->usuario_id}}">{{$client->usuario->nombre}} {{$client->usuario->apellido_1}} {{$client->usuario->telefono}}</option>
-                                                    @endforeach
-                                                </select>
+                                        <div class="mb-3">
+                                            <label for="transactionType" class="col-12 col-form-label text-md-center">Tipo transacción</label>
+                                            <div class="col-12 col-md-8 m-auto">
+                                                <div class="d-flex justify-content-around">
+                                                    <div>
+                                                        <input id="transactionType-income" class="{{ $errors->has('transactionType') ? ' is-invalid' : '' }}" name="transactionType" value="1" type="radio" autofocus>
+                                                        <label for="transactionType-income">Ingreso</label>
+                                                    </div>
+                                                    <div>
+                                                        <input id="transactionType-expense" class="{{ $errors->has('transactionType') ? ' is-invalid' : '' }}" name="transactionType" value="0" type="radio" autofocus>
+                                                        <label for="transactionType-expense">Gasto</label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="input-group col-10 col-md-5 m-auto">
@@ -118,6 +115,15 @@
                                                 <textarea name="data" class="form-control" rows="3"></textarea>
                                             </div>
                                         </div>
+                                        <div id="person" class="input-group col-10 col-md-5 m-auto" style="display: none">
+                                            <span class="iconos">
+                                                <i class="material-icons">people</i>
+                                            </span>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Persona a la que se debe <small>(requerido)</small></label>
+                                                <input name="person" class="form-control" type="text">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -144,6 +150,38 @@
 @endsection
 
 @push('scripts')
+    <!-- Remove account payable when the transaction is an income and show/hide the person to whom it is owed-->
+    <script>
+        const select = document.getElementById('paymentMethodId');
+        document.addEventListener('DOMContentLoaded', function() {
+
+            select.addEventListener('change', function () {
+                let selectedText = select.options[select.selectedIndex].text
+                if (selectedText === '{{\App\Utils\PaymentMethodsEnum::ACCOUNT_PAYABLE->value}}') {
+                    $("#person").show();
+                } else {
+                    $("#person").hide();
+                }
+            });
+
+            $('input[name="transactionType"]').change(function() {
+                select.value = "";
+                select.dispatchEvent(new Event('change'));
+                var selectedValue = $('input[name="transactionType"]:checked').val();
+                if (selectedValue === "1") {
+                    $('#paymentMethodId option').each(function() {
+                        var paymentMethodType = $(this).text();
+                        if (paymentMethodType === '{{\App\Utils\PaymentMethodsEnum::ACCOUNT_PAYABLE->value}}') {
+                            $(this).hide();
+                        }
+                    });
+                } else {
+                    $('#paymentMethodId option').show();
+                }
+            });
+        });
+    </script>
+
     <!--datetimePicker configuration-->
     <script>
         $(function () {
@@ -162,14 +200,6 @@
                 }else{
                     $("#dateContainer").removeClass( "is-empty" );
                 }
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                theme: 'bootstrap4',
             });
         });
     </script>

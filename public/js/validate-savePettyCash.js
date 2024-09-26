@@ -17,7 +17,7 @@ $(document).ready(function(){
     // Code for the Validator
     $validator = $('.wizard-card form').validate({
         rules: {
-            clientId:{
+            transactionType:{
                 required: true,
             },
             paymentMethodId:{
@@ -32,14 +32,23 @@ $(document).ready(function(){
             data:{
                 required: true,
             },
-
-        },
+            person:{
+                required: true,
+            },
+            },
         messages: {
             radio: "This is a required field"
         },
 
         errorPlacement: function(error, element) {
             $(element).parent('div').addClass('has-error');
+            if($validator.errorMap.hasOwnProperty("transactionType")){
+                $('label[for="transactionType-income"], label[for="transactionType-expense"]').css("color", "red");
+            }else{
+                $('label[for="transactionType-income"], label[for="transactionType-expense"]').css("color", "");
+            }
+
+            $validator.focusInvalid();
         }
     });
 

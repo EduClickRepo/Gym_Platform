@@ -143,16 +143,16 @@ class PagosController extends Controller
     public function savePettyCash(Request $request){
 
         $payDay = Carbon::createFromFormat('d/m/Y',$request->payDay);
+        $paymentMethod = PaymentMethod::find($request->paymentMethodId);
         $transaction = new TransaccionesPagos();
         $transaction->payment_method_id = $request->paymentMethodId;
         $transaction->ref_payco = "1";
         $transaction->codigo_respuesta = "1";
-        $transaction->respuesta = "Aprobado";
-        $transaction->data = $request->data ?? "";
-        $transaction->user_id = $request->clientId;
+        $transaction->respuesta = strcasecmp( $paymentMethod->name, PaymentMethodsEnum::ACCOUNT_PAYABLE->value) == 0 ? $request->person : "Aprobado";
+        $transaction->data = $request->data;
+        $transaction->user_id = Auth::id();
         $transaction->created_at = $payDay;
-        $paymentMethod = PaymentMethod::find($request->paymentMethodId);
-        $transaction->amount = strcasecmp( $paymentMethod->name, PaymentMethodsEnum::ACCOUNT_PAYABLE->value) == 0 ? -1*abs($request->amount) : $request->amount;
+        $transaction->amount = $request->transactionType == 1 ? $request->amount : -1*abs($request->amount);//transaction_type == 1 is an income, 0 is a expense
         $transaction->is_petty_cash = 1;
         $transaction->save();
 
