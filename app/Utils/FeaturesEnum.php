@@ -20,4 +20,5 @@ enum FeaturesEnum: string
     case MAKE_WELLBEING_TEST = 'MAKE_WELLBEING_TEST';
 
     case schedule_until = 'schedule_until';
+    const SEE_EXTENDED_SCHEDULE = 'SEE_EXTENDED_SCHEDULE';
 }
