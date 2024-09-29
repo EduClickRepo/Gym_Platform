@@ -21,5 +21,4 @@ enum FeaturesEnum: string
     case SEE_EXTENDED_SCHEDULE = 'SEE_EXTENDED_SCHEDULE';
 
     case schedule_until = 'schedule_until';
-    const SEE_EXTENDED_SCHEDULE = 'SEE_EXTENDED_SCHEDULE';
 }
