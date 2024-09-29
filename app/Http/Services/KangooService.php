@@ -16,30 +16,46 @@ class KangooService
      * @throws WeightNotSupportedException
      * @throws NoAvailableEquipmentException
      */
-    public function assignKangoo(int $shoeSize, int $weight, $startDateTime, $endDateTime)
+    public function assignKangoo(int $shoeSize, int $weight, $startDateTime, $endDateTime, $preferSmallSizes = false, $reassignedKangoos = null, $ignoredClientsSession = null)
     {
 
         $kangooSizes = $this->getKangooSizes($shoeSize);
         $resistance = $this->getKangooResistance($weight);
 
-        $assignedKangooId = DB::table('kangoos')->whereNotIn('id', function($q) use($startDateTime, $endDateTime){
+        $assignedKangooQuery =DB::table('kangoos')
+            ->whereNotIn('id', function($q) use($ignoredClientsSession, $startDateTime, $endDateTime){
             $q->select('kangoos.id')->from('kangoos')
                 ->leftJoin('sesiones_cliente', 'kangoos.id', '=', 'sesiones_cliente.kangoo_id')
+                ->when($ignoredClientsSession, function ($query) use ($endDateTime, $startDateTime, $ignoredClientsSession) {
+                    $query->whereNotIn('sesiones_cliente.id', $ignoredClientsSession);
+                })
                 ->where('sesiones_cliente.fecha_fin', '>', Carbon::parse($startDateTime)->format('Y-m-d H:i:s'))
                 ->where('sesiones_cliente.fecha_inicio', '<', Carbon::parse($endDateTime)->format('Y-m-d H:i:s'))
                 ->whereNull('sesiones_cliente.deleted_at');
-        })->where('kangoos.estado', KangooStatesEnum::Available)
-            ->whereIn('talla', $kangooSizes)
+            })
+            ->when($reassignedKangoos, function ($query) use ($reassignedKangoos) {
+                $query->whereNotIn('kangoos.id', $reassignedKangoos);
+            })
+            ->where('kangoos.estado', KangooStatesEnum::Available)
             ->where('kangoos.resistencia', '>=', $resistance)
             ->whereNull('kangoos.deleted_at')
             ->orderBy('kangoos.resistencia')
-            ->select('kangoos.id')
-            ->first();
+            ->select('kangoos.id');
 
+        $length = count($kangooSizes);
+        $start = $preferSmallSizes ? 0 : $length - 1;  // It determines if it stars from beginning or end
+        $increment = $preferSmallSizes ? 1 : -1;       // It determines if it advances forward or backward
+        for ($i = $start; $i >= 0 && $i < $length; $i += $increment) {
+            $queryClone = clone $assignedKangooQuery;
+            $queryClone->where('talla', $kangooSizes[$i]);
+            $assignedKangooId = $queryClone->first();
+            if ($assignedKangooId) {
+                break;
+            }
+        }
         if (!$assignedKangooId){
             throw new NoAvailableEquipmentException();
         }
-
         return $assignedKangooId->id;
     }
 

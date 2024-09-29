@@ -93,6 +93,7 @@ class ClientPlanRepository
                 Session::put('msg_level', 'danger');
                 Session::put('msg', __('general.upgrade_morning_plan'));
                 Session::save();
+                return null;
             }
             return $clientPlan;
         }

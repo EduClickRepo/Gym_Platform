@@ -307,7 +307,7 @@ class SesionClienteController extends Controller
                 return response()->json(['status' =>  'reserved', 'sesionClienteId' => $sesionCliente->id], 200);
             }
             DB::commit();
-            Session::forget('msg');//FIT-107: Clear message from morning plan
+            Session::forget('msg');//FIT-107: Clear message from morning plan - When the user enters in the event it shows the error message, then if anyway he/she tries to schedule it will no show the message again but will show the pay modal
             return response()->json(['status' =>  'goToPay'], 200);
         }catch (Exception $exception) {
             DB::rollBack();
