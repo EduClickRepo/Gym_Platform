@@ -23,12 +23,21 @@ class ActiveAndRetainedClientsService
 
         $countActiveClients = ClientPlan::where('created_at', '<=', $date)
             ->where('expiration_date', '>=', $date)
+            ->where(function ($query)  {
+                $query->where('remaining_shared_classes', '>', 0)
+                    ->orWhereNull('remaining_shared_classes');
+            })
             ->distinct('client_id')
             ->count('client_id');
 
+        //The active clients are those who acquired a plan in the last 30 days, and don't have a plan before
         $countActiveNewClients = ClientPlan::where('created_at', '<=', $date)
             ->where('created_at', '>=', $thirtyDaysAgo)
             ->where('expiration_date', '>=', $date)
+            ->where(function ($query)  {
+                $query->where('remaining_shared_classes', '>', 0)
+                    ->orWhereNull('remaining_shared_classes');
+            })
             ->whereNotExists(function ($query) use ($date) {
                 $query->selectRaw(1)
                     ->from('client_plans as cp2')
@@ -40,8 +49,13 @@ class ActiveAndRetainedClientsService
             ->distinct('client_id')
             ->count('client_id');
 
+        //The active old clients are those who have a plan before the current plan, or have plans created more than 30 day ago (ie: annual or promos)
         $countActiveOldClients = ClientPlan::where('created_at', '<=', $date)
             ->where('expiration_date', '>=', $date)
+            ->where(function ($query)  {
+                $query->where('remaining_shared_classes', '>', 0)
+                    ->orWhereNull('remaining_shared_classes');
+            })
             ->where(function($q) use ($date, $thirtyDaysAgo) {
                 $q->whereExists(function ($query) use ($date) {
                     $query->selectRaw(1)

@@ -13,7 +13,7 @@
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="expirationType2" name="expirationType" value="active" class="custom-control-input">
-                    <label class="custom-control-label" for="expirationType2">Activos</label>
+                    <label id="expirationType2Label" class="custom-control-label" for="expirationType2">Activos</label>
                 </div>
                 <div class="custom-control custom-radio custom-control-inline">
                     <input type="radio" id="expirationType3" name="expirationType" value="inactive" class="custom-control-input">
@@ -186,6 +186,10 @@
                     success: function (data) {
                         // Limpiar la tabla
                         $('tbody[name="table"] .user-row').remove();
+                        var expirationTypeValue = $('input[name="expirationType"]:checked').val();
+                        if(expirationTypeValue == "active"){
+                            $('#expirationType2Label').text('Activos: ' + data.length);
+                        }
                         data.forEach(function (result) {
                             let assessmentText = result.physical_assessments_created_at
                                 ? result.physical_assessments_created_at

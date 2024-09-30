@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 
 use App\User;
-use App\Utils\Constantes;
 use App\Utils\RolsEnum;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -111,17 +110,28 @@ class UserController extends controller
             case "active":
                 $query->join('client_plans', function ($join) use ($currentDate) {
                     $join->on('usuarios.id', '=', 'client_plans.client_id')
-                        ->where('client_plans.expiration_date', '>=', $currentDate->copy()->startOfDay());
+                        ->where('client_plans.expiration_date', '>=', $currentDate->copy()->startOfDay())
+                        ->where(function ($query)  {
+                            $query->where('remaining_shared_classes', '>', 0)
+                                ->orWhereNull('remaining_shared_classes');
+                        });
                 });
                 break;
             case "inactive":
                 $query->join('client_plans', function ($join) use ($currentDate) {
                     $join->on('usuarios.id', '=', 'client_plans.client_id')
-                        ->where('client_plans.expiration_date', '<', $currentDate->copy()->startOfDay());
+                        ->where(function ($query) use ($currentDate) {
+                            $query->where('client_plans.expiration_date', '<', $currentDate->copy()->startOfDay())
+                                ->orWhere('remaining_shared_classes', '=', 0);
+                        });
                 })->whereNotIn('usuarios.id', function ($query) use ($currentDate) {
                     $query->select('cpa.client_id')
                         ->from('client_plans as cpa')
-                        ->where('cpa.expiration_date', '>=', $currentDate->copy()->startOfDay());
+                        ->where('cpa.expiration_date', '>=', $currentDate->copy()->startOfDay())
+                        ->where(function ($query)  {
+                            $query->where('remaining_shared_classes', '>', 0)
+                                ->orWhereNull('remaining_shared_classes');
+                        });
                 });
                 break;
         }
