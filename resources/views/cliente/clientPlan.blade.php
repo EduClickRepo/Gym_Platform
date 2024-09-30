@@ -26,6 +26,9 @@
                         <p class="d-inline-block" style="margin-left: -4px">: ∞</p>
                     @endif
                     {{--FIT-57: end block code--}}
+                    @if($clientPlan->frozen_from)
+                        <p class="d-block my-1"><strong>Cogelado: </strong>{{$clientPlan->frozen_from}} - {{$clientPlan->frozen_to}}</p>
+                    @endif
                     <p class="d-block my-1"><strong>Válido hasta: </strong>{{$clientPlan->expiration_date}}</p>
                 </div>
             </div>
