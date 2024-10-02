@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Achievements\CreateThreeAchievements;
 use App\EditedEvent;
 use App\Exceptions\NoAvailableEquipmentException;
+use App\Exceptions\AlreadyHasSessionException;
 use App\Exceptions\NoVacancyException;
 use App\Exceptions\ShoeSizeNotSupportedException;
 use App\Exceptions\WeightNotSupportedException;
@@ -163,9 +164,11 @@ class SesionClienteController extends Controller
      * @param $event
      * @param $startDateTime
      * @param $endDateTime
+     * @param $client
+     * @throws AlreadyHasSessionException
      * @throws NoVacancyException
      */
-    private function validateVacancy($event, $startDateTime, $endDateTime)
+    private function validateVacancy($event, $startDateTime, $endDateTime, $client)
     {
         $scheduled_clients = SesionCliente::where('evento_id', $event->id)
             ->where('fecha_inicio', '=', $startDateTime)
@@ -173,10 +176,19 @@ class SesionClienteController extends Controller
         if($event->cupos <= $scheduled_clients){
             throw new NoVacancyException();
         }
+        $existingSession = SesionCliente::where('evento_id', $event->id)
+            ->where('fecha_inicio', '=', $startDateTime)
+            ->where('fecha_fin', '=', $endDateTime)
+            ->where('clientE_id', '=', $client->usuario_id)
+            ->first();
+        if($existingSession){
+            throw new AlreadyHasSessionException();
+        }
     }
 
     /**
      * @throws ShoeSizeNotSupportedException
+     * @throws AlreadyHasSessionException
      * @throws NoVacancyException
      * @throws NoAvailableEquipmentException
      * @throws WeightNotSupportedException
@@ -198,7 +210,7 @@ class SesionClienteController extends Controller
         $startDateTime = $formattedStartDate . ' ' . $startHour;
         $endDateTime = Carbon::parse($endDate)->format('Y-m-d') . ' ' . $endHour;
         if($validateVacancy){
-            $this->validateVacancy($event, $startDateTime, $endDateTime);
+            $this->validateVacancy($event, $startDateTime, $endDateTime, $client);
         }
         if(filter_var($isRenting, FILTER_VALIDATE_BOOLEAN)){
             $kangooId = $this->assignEquipment($event, $client->talla_zapato, $client->peso()->peso, $startDateTime, $endDateTime);
