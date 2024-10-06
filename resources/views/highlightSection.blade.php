@@ -2,13 +2,15 @@
 <div id="highlightCarousel" class="carousel slide mx-auto mb-4" style="height: 75vh; width: 42.19vh" data-ride="carousel">
     <div class="carousel-inner w-100 h-100">
         @foreach($highlightSections as $highlightSection)
-            @if($highlightSection->event)<a href="{{route('eventos.show',['event' => $highlightSection->event, 'date' => Carbon\Carbon::parse($highlightSection->event->fecha_inicio)->format('d-m-Y'), 'hour' => $highlightSection->event->start_hour, 'isEdited' => 0])}}">@endif
             <div class="carousel-item w-100 h-100 @if($loop->first)active @endif">
-                @if($highlightSection->event)<a href="{{route('eventos.show',['event' => $highlightSection->event, 'date' => Carbon\Carbon::parse($highlightSection->event->fecha_inicio)->format('d-m-Y'), 'hour' => $highlightSection->event->start_hour, 'isEdited' => 0])}}">@endif
-                <img src="{{asset('images/highlightSections/'.$highlightSection->image)}}" class="d-block w-100 h-100" alt="">
-                @if($highlightSection->event)</a>@endif
-            </div>
+            @if($highlightSection->event)<a href="{{route('eventos.show',['event' => $highlightSection->event, 'date' => Carbon\Carbon::parse($highlightSection->event->fecha_inicio)->format('d-m-Y'), 'hour' => $highlightSection->event->start_hour, 'isEdited' => 0])}}">@endif
+                @if($highlightSection->type=='image')
+                    <img src="{{asset('images/highlightSections/'.$highlightSection->asset)}}" class="d-block w-100 h-100" alt="">
+                @elseif($highlightSection->type=='video')
+                    <video autoplay muted class="portrait-video landingVideo d-block w-100 h-100" src="{{asset('video/highlightSections/'.$highlightSection->asset)}}" preload="auto"></video>
+                @endif
             @if($highlightSection->event)</a>@endif
+            </div>
         @endforeach
     </div>
     @if($highlightSections->count() > 1)
