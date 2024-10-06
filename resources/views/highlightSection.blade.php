@@ -7,7 +7,7 @@
                 @if($highlightSection->type=='image')
                     <img src="{{asset('images/highlightSections/'.$highlightSection->asset)}}" class="d-block w-100 h-100" alt="">
                 @elseif($highlightSection->type=='video')
-                    <video autoplay muted class="portrait-video landingVideo d-block w-100 h-100" src="{{asset('video/highlightSections/'.$highlightSection->asset)}}" preload="auto"></video>
+                    <video autoplay muted class="portrait-video landingVideo d-block w-100 h-100" src="{{asset('video/highlightSections/'.$highlightSection->asset)}}" preload="auto" loop></video>
                 @endif
             @if($highlightSection->event)</a>@endif
             </div>
