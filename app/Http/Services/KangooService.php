@@ -2,6 +2,9 @@
 
 namespace App\Http\Services;
 
+use App\Exceptions\NoAvailableEquipmentException;
+use App\Exceptions\ShoeSizeNotSupportedException;
+use App\Exceptions\WeightNotSupportedException;
 use App\Model\Cliente;
 use App\Model\Evento;
 use App\Utils\KangooStatesEnum;
@@ -69,25 +72,13 @@ class KangooService
             return ["J"];
         }
 
-        switch ($shoeSize){
-            case 34:
-            case 35:
-            case 36:
-                return ["XS", "S"];
-            case 37:
-            case 38:
-            case 39:
-                return ["S", "M"];
-            case 40:
-            case 41:
-                return ["M", "L"];
-            case 42:
-            case 43:
-            case 44:
-                return ["L"];
-            default:
-                throw new ShoeSizeNotSupportedException();
-        }
+        return match ($shoeSize) {
+            34, 35, 36 => ["XS", "S"],
+            37, 38, 39 => ["S", "M"],
+            40, 41 => ["M", "L"],
+            42, 43, 44 => ["L"],
+            default => throw new ShoeSizeNotSupportedException(),
+        };
     }
 
     /**
@@ -126,7 +117,7 @@ class KangooService
                 $startDateTime = Carbon::parse($event->fecha_inicio->format('Y-m-d') . ' ' . $event->start_hour);
                 $endDateTime = Carbon::parse($event->fecha_fin->format('Y-m-d') . ' ' . $event->end_hour);
                 $kangooId = $this->assignKangoo($user->talla_zapato, $user->peso()->peso, $startDateTime, $endDateTime, true, $reassignedKangoos, $ignoredClientsSession);
-                $cases[] = "WHEN {$clientSession->id} THEN {$kangooId}";
+                $cases[] = "WHEN $clientSession->id THEN $kangooId";
                 $ids[] = $clientSession->id;
                 array_push($reassignedKangoos, $kangooId);
                 //preferir tallas pequeñas, creo que ya se hace por defecto
@@ -135,7 +126,7 @@ class KangooService
 
             $idsString = implode(',', $ids);
             $casesString = implode(' ', $cases);
-            DB::update("UPDATE sesiones_cliente SET kangoo_id = CASE id {$casesString} END WHERE id IN ({$idsString})");
+            DB::update("UPDATE sesiones_cliente SET kangoo_id = CASE id $casesString END WHERE id IN ($idsString)");
             DB::commit();
         }catch (Exception $exception) {
             Log::error("ERROR KangooService - reorderKangoos: " . $exception->getMessage());
