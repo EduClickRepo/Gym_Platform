@@ -2,12 +2,13 @@
 
 namespace App\Http\Services;
 
-use App\Exceptions\NoAvailableEquipmentException;
-use App\Exceptions\ShoeSizeNotSupportedException;
-use App\Exceptions\WeightNotSupportedException;
+use App\Model\Cliente;
+use App\Model\Evento;
 use App\Utils\KangooStatesEnum;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class KangooService
 {
@@ -108,6 +109,47 @@ class KangooService
            throw new WeightNotSupportedException();
         }
         return $resistance;
+    }
+
+    public function reorderKangoos($event){
+        Log::info('Optimizando organización de los kangoos...');
+        try {
+            $clientsSession = $event->attendees()->join('clientes', 'cliente_id', '=', 'clientes.usuario_id')
+                ->orderBy('talla_zapato', 'ASC')->get();
+            if($clientsSession->isEmpty()){
+                return;
+            }
+            $reassignedKangoos = [];
+            $ignoredClientsSession = $clientsSession->pluck('id');
+            foreach ($clientsSession as $clientSession) {
+                $user = Cliente::find($clientSession->usuario_id);
+                $startDateTime = Carbon::parse($event->fecha_inicio->format('Y-m-d') . ' ' . $event->start_hour);
+                $endDateTime = Carbon::parse($event->fecha_fin->format('Y-m-d') . ' ' . $event->end_hour);
+                $kangooId = $this->assignKangoo($user->talla_zapato, $user->peso()->peso, $startDateTime, $endDateTime, true, $reassignedKangoos, $ignoredClientsSession);
+                $cases[] = "WHEN {$clientSession->id} THEN {$kangooId}";
+                $ids[] = $clientSession->id;
+                array_push($reassignedKangoos, $kangooId);
+                //preferir tallas pequeñas, creo que ya se hace por defecto
+            }
+            DB::beginTransaction();
+
+            $idsString = implode(',', $ids);
+            $casesString = implode(' ', $cases);
+            DB::update("UPDATE sesiones_cliente SET kangoo_id = CASE id {$casesString} END WHERE id IN ({$idsString})");
+            DB::commit();
+        }catch (Exception $exception) {
+            Log::error("ERROR KangooService - reorderKangoos: " . $exception->getMessage());
+            DB::rollBack();
+        }
+    }
+
+    public function reorderKangoosOverload($id, $startDate, $startHour, $endDate, $endHour){
+        $event = Evento::find($id);
+        $event->fecha_inicio = $startDate;
+        $event->fecha_fin = $endDate;
+        $event->start_hour = $startHour;
+        $event->end_hour = $endHour;
+        $this->reorderKangoos($event);
     }
 
 }

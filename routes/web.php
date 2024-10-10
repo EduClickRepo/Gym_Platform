@@ -98,6 +98,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('{user}/comment/', [UserCommentController::class, 'comment'])->name('commentUser');
     Route::post('{comment}/reply/', [UserCommentController::class, 'reply'])->name('replyUserComment');
+
+    Route::post('/reorderKangoos', [EventController::class, 'reorderKangoos'])->name('reorderKangoos');
 });
 
 Route::group(['middleware' => 'admin'], function () {

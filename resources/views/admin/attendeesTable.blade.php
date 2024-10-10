@@ -36,9 +36,14 @@
         <tbody>
     </table>
 
-    <button class="btn themed-btn" data-toggle="modal" data-target="#registerAttendee">
-        Registrar Asistente
-    </button>
+    <div class="d-flex justify-content-around">
+        <button class="btn themed-btn" data-toggle="modal" data-target="#registerAttendee">
+            Registrar Asistente
+        </button>
+        @if(strcasecmp($event->classType->type, \App\Utils\PlanTypesEnum::KANGOO->value) == 0)
+            <button type="button" class="btn themed-btn mt-3" onclick="reorderKangoos()">Reordenar Kangoos</button>
+        @endif
+    </div>
 </div>
 
 @include('components/modalRegisterAttendee')
@@ -61,6 +66,33 @@
                 error: function(data) {
                     console.log(data);
                 }*/
+            });
+        }
+    </script>
+
+    <script>
+        function reorderKangoos(){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "{{ route('reorderKangoos') }}",
+                method: "POST",
+                data: {
+                    eventId: {{$event->id}},
+                    startDate: "{{Carbon\Carbon::parse($event->fecha_inicio)->format('d-m-Y')}}",
+                    startHour: "{{$event->start_hour}}",
+                    endDate: "{{Carbon\Carbon::parse($event->fecha_fin)->format('d-m-Y')}}",
+                    endHour: "{{$event->end_hour}}",
+                },
+                success: function () {
+                    $('html, body').animate({ scrollTop: 0 }, 0);
+                    location.reload();
+                },
+                error: function(data) {
+                    console.log("Erorr al reordenar los kangoos")
+                    //console.log(data); //if you want to debug you need to uncomment this line and comment reload
+                }
             });
         }
     </script>

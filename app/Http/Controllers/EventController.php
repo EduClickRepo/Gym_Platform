@@ -8,11 +8,9 @@ use App\Exceptions\NoAvailableEquipmentException;
 use App\Exceptions\ShoeSizeNotSupportedException;
 use App\Exceptions\WeightNotSupportedException;
 use App\Feature;
-use App\Http\Controllers\Auth\SeguridadController;
 use App\Http\Services\KangooService;
 use App\Model\Evento;
 use App\Repositories\ClientPlanRepository;
-use App\Utils\Constantes;
 use App\Utils\DaysEnum;
 use App\Utils\FeaturesEnum;
 use Carbon\Carbon;
@@ -251,5 +249,9 @@ class EventController extends Controller
                 ['start_hour', 'asc'],
         ])->values()->all();
         return $events;
+    }
+
+    public function reorderKangoos(Request $request){
+        $this->kangooService->reorderKangoosOverload($request->eventId, $request->startDate, $request->startHour, $request->endDate, $request->endHour);
     }
 }
