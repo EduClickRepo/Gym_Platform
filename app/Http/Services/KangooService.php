@@ -106,6 +106,7 @@ class KangooService
         Log::info('Optimizando organización de los kangoos...');
         try {
             $clientsSession = $event->attendees()->join('clientes', 'cliente_id', '=', 'clientes.usuario_id')
+                ->whereNotNull('kangoo_id')
                 ->orderBy('talla_zapato', 'ASC')->get();
             if($clientsSession->isEmpty()){
                 return;

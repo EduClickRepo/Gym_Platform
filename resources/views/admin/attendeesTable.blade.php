@@ -41,7 +41,7 @@
             Registrar Asistente
         </button>
         @if(strcasecmp($event->classType->type, \App\Utils\PlanTypesEnum::KANGOO->value) == 0)
-            <button type="button" class="btn themed-btn mt-3" onclick="reorderKangoos()">Reordenar Kangoos</button>
+            <button type="button" class="btn themed-btn" onclick="reorderKangoos()">Reordenar Kangoos</button>
         @endif
     </div>
 </div>
