@@ -35,7 +35,10 @@ $(document).ready(function(){
             person:{
                 required: true,
             },
+            categoryId:{
+                required: true,
             },
+        },
         messages: {
             radio: "This is a required field"
         },

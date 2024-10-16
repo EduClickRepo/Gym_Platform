@@ -108,6 +108,21 @@
                                         </div>
                                         <div class="input-group col-10 col-md-5 m-auto">
                                             <span class="iconos">
+                                                <i class="fas fa-credit-card"></i>
+                                            </span>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Categoría <small>(requerido)</small></label>
+                                                <select class="form-control" id="categoryId" name="categoryId">
+                                                    <option disabled selected value style="display:none"></option>
+                                                    @foreach($categories as $category)
+                                                        <option class="color-black" value="{{$category->id}}">{{$category->name}}</option>
+                                                    @endforeach
+                                                    <option class="color-black" value="0">Otra</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div id="data" class="input-group col-10 col-md-5 m-auto" style="display: none">
+                                            <span class="iconos">
                                                 <i class="fa fa-comments" aria-hidden="true"></i>
                                             </span>
                                             <div class="form-group label-floating">
@@ -152,11 +167,12 @@
 @push('scripts')
     <!-- Remove account payable when the transaction is an income and show/hide the person to whom it is owed-->
     <script>
-        const select = document.getElementById('paymentMethodId');
+        const selectPaymentMethod = document.getElementById('paymentMethodId');
+        const selectCategory = document.getElementById('categoryId');
         document.addEventListener('DOMContentLoaded', function() {
 
-            select.addEventListener('change', function () {
-                let selectedText = select.options[select.selectedIndex].text
+            selectPaymentMethod.addEventListener('change', function () {
+                let selectedText = selectPaymentMethod.options[selectPaymentMethod.selectedIndex].text
                 if (selectedText === '{{\App\Utils\PaymentMethodsEnum::ACCOUNT_PAYABLE->value}}') {
                     $("#person").show();
                 } else {
@@ -164,9 +180,18 @@
                 }
             });
 
+            selectCategory.addEventListener('change', function () {
+                let selectedText = selectCategory.options[selectCategory.selectedIndex].text
+                if (selectedText === '{{\App\Utils\CategoriesEnum::OTRA->value}}') {
+                    $("#data").show();
+                } else {
+                    $("#data").hide();
+                }
+            });
+
             $('input[name="transactionType"]').change(function() {
-                select.value = "";
-                select.dispatchEvent(new Event('change'));
+                selectPaymentMethod.value = "";
+                selectPaymentMethod.dispatchEvent(new Event('change'));
                 var selectedValue = $('input[name="transactionType"]:checked').val();
                 if (selectedValue === "1") {
                     $('#paymentMethodId option').each(function() {

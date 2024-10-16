@@ -19,6 +19,7 @@ enum FeaturesEnum: string
     case LOAD_CLIENT_PLAN = 'LOAD_CLIENT_PLAN';
     case MAKE_WELLBEING_TEST = 'MAKE_WELLBEING_TEST';
     case SEE_EXTENDED_SCHEDULE = 'SEE_EXTENDED_SCHEDULE';
+    case CHANGE_TRANSACTION_CATEGORY = 'CHANGE_TRANSACTION_CATEGORY';
 
     case schedule_until = 'schedule_until';
 }

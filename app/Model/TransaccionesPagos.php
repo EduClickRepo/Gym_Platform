@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Category;
 use App\PaymentMethod;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
@@ -24,5 +25,10 @@ class TransaccionesPagos extends Model
     public function payment()
     {
         return $this->belongsTo(PaymentMethod::Class, 'payment_method_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::Class, 'category_id');
     }
 }

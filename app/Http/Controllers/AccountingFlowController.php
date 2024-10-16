@@ -77,7 +77,7 @@ class AccountingFlowController extends Controller
 
             $negativeMayorCashSum = $negativeValuesMayorCash->sum('amount');
         }
-        return view('cliente.AccountingFlow',
+        return view('admin.accounting.accountingFlow',
             compact(
                 'positiveValuesPettyCash',
                 'positivePettyCashSum',

@@ -149,11 +149,14 @@ class PagosController extends Controller
         $transaction->ref_payco = "1";
         $transaction->codigo_respuesta = "1";
         $transaction->respuesta = strcasecmp( $paymentMethod->name, PaymentMethodsEnum::ACCOUNT_PAYABLE->value) == 0 ? $request->person : "Aprobado";
-        $transaction->data = $request->data;
+        $transaction->data = $request->data ?? '';
         $transaction->user_id = Auth::id();
         $transaction->created_at = $payDay;
         $transaction->amount = $request->transactionType == 1 ? $request->amount : -1*abs($request->amount);//transaction_type == 1 is an income, 0 is a expense
         $transaction->is_petty_cash = 1;
+        if($request->categoryId != 0){
+            $transaction->category_id =  $request->categoryId;
+        }
         $transaction->save();
 
         Session::put('msg_level', 'success');

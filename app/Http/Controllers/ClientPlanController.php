@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Model\Cliente;
 use App\Model\ClientPlan;
 use App\Model\Plan;
 use App\Model\TransaccionesPagos;
 use App\PaymentMethod;
 use App\RemainingClass;
+use App\Utils\CategoriesEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,6 +67,7 @@ class ClientPlanController extends Controller
             $transaction->data = $request->data ?? "";
             $transaction->user_id = $request->clientId;
             $transaction->created_at = $payDay;
+            $transaction->category_id = Category::where('name', CategoriesEnum::PLANES)->first()->id;
             $transaction->save();
 
             $lastPlan = ClientPlan::find($request->lastPlanId);
