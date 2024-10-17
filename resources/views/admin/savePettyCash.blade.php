@@ -121,7 +121,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div id="data" class="input-group col-10 col-md-5 m-auto" style="display: none">
+                                        <div class="input-group col-10 col-md-5 m-auto">
                                             <span class="iconos">
                                                 <i class="fa fa-comments" aria-hidden="true"></i>
                                             </span>
@@ -168,7 +168,6 @@
     <!-- Remove account payable when the transaction is an income and show/hide the person to whom it is owed-->
     <script>
         const selectPaymentMethod = document.getElementById('paymentMethodId');
-        const selectCategory = document.getElementById('categoryId');
         document.addEventListener('DOMContentLoaded', function() {
 
             selectPaymentMethod.addEventListener('change', function () {
@@ -177,15 +176,6 @@
                     $("#person").show();
                 } else {
                     $("#person").hide();
-                }
-            });
-
-            selectCategory.addEventListener('change', function () {
-                let selectedText = selectCategory.options[selectCategory.selectedIndex].text
-                if (selectedText === '{{\App\Utils\CategoriesEnum::OTRA->value}}') {
-                    $("#data").show();
-                } else {
-                    $("#data").hide();
                 }
             });
 
