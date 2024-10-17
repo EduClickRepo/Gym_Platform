@@ -63,6 +63,7 @@
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
+                                    <option style="color: black" value="0">Otra</option>
                                 </select>
                             </td>
                             <td><input type="date" name="filter_date" id="filter_date" placeholder="fecha"></td>

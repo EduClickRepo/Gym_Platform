@@ -97,8 +97,12 @@ class AccountingCloseController extends Controller
         if ($paymentMethod && $paymentMethod != "all") {
             $query->where('transacciones_pagos.payment_method_id', $paymentMethod);
         }
-        if ($category && $category != "all") {
-            $query->where('transacciones_pagos.category_id', $category);
+        if ($category != null && $category != "all") {
+            if($category == "0"){
+                $query->whereNull('transacciones_pagos.category_id');
+            }else{
+                $query->where('transacciones_pagos.category_id', $category);
+            }
         }
         if ($amount) {
             $query->where('transacciones_pagos.amount', $amount);
