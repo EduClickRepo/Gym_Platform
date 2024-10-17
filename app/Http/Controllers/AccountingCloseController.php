@@ -56,12 +56,25 @@ class AccountingCloseController extends Controller
         $this->validateDates($request);
         $startDate = Carbon::parse($request->input('startDate'))->startOfDay();
         $endDate = Carbon::parse($request->input('endDate'))->endOfDay();
+        $categoryId = $request->input('categoryId');
+        $paymentMethodId = $request->input('paymentMethodId');
 
         $transactions = TransaccionesPagos
             ::where('created_at', '>=', $startDate)
             ->where('created_at', '<=', $endDate)
             ->where('codigo_respuesta', '=', 1)
-            ->get();
+            ->when($paymentMethodId, function ($query, $paymentMethodId) {
+                return $query->where('payment_method_id', $paymentMethodId);
+            });
+
+        if ($categoryId != null) {
+            if($categoryId == "0"){
+                $transactions->whereNull('transacciones_pagos.category_id');
+            }else{
+                $transactions->where('transacciones_pagos.category_id', $categoryId);
+            }
+        }
+        $transactions = $transactions->get();
 
         $paymentMethods = PaymentMethod::where('enabled', true)->get();
         $categories = Category::all();
