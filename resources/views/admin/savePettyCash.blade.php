@@ -9,6 +9,10 @@
     <link rel="stylesheet" type="text/css"
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"/>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+
     <link href="{{asset('css/profileWizard.css')}}" rel="stylesheet"/>
 
     <!--datetimePicker-->
@@ -139,6 +143,20 @@
                                                 <input name="person" class="form-control" type="text">
                                             </div>
                                         </div>
+                                        <div id="user" class="input-group col-10 col-md-5 m-auto">
+                                            <span class="iconos">
+                                                <i class="material-icons">people</i>
+                                            </span>
+                                            <div class="form-group label-floating">
+                                                <label class="control-label">Usuario <small>(Opcional)</small></label>
+                                                <select class="form-control select2 bg-dark" id="clientId" name="clientId">
+                                                    <option style="color: black" value="" disabled selected>Usuario...</option>
+                                                    @foreach($clients as $client)
+                                                        <option value="{{$client->usuario_id}}">{{$client->usuario->nombre}} {{$client->usuario->apellido_1}} {{$client->usuario->telefono}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -215,6 +233,14 @@
                 }else{
                     $("#dateContainer").removeClass( "is-empty" );
                 }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                theme: 'bootstrap4',
             });
         });
     </script>

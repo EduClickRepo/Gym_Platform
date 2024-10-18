@@ -150,7 +150,7 @@ class PagosController extends Controller
         $transaction->codigo_respuesta = "1";
         $transaction->respuesta = strcasecmp( $paymentMethod->name, PaymentMethodsEnum::ACCOUNT_PAYABLE->value) == 0 ? $request->person : "Aprobado";
         $transaction->data = $request->data ?? '';
-        $transaction->user_id = Auth::id();
+        $transaction->user_id = $request->clientId ?? null;
         $transaction->created_at = $payDay;
         $transaction->amount = $request->transactionType == 1 ? $request->amount : -1*abs($request->amount);//transaction_type == 1 is an income, 0 is a expense
         $transaction->is_petty_cash = 1;

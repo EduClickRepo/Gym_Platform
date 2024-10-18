@@ -7,6 +7,7 @@ use App\PaymentMethod;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class TransaccionesPagos extends Model
 {
@@ -16,6 +17,15 @@ class TransaccionesPagos extends Model
     protected $fillable = [
         'ref_payco', 'payment_method_id', 'codigo_respuesta', 'respuesta', 'amount', 'data', 'user_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_by = Auth::id();
+        });
+    }
 
     public function user()
     {
