@@ -2,7 +2,9 @@
 
 namespace App\Console;
 
+use App\Http\Services\PenalizeService;
 use App\Jobs\CalculateActiveClients;
+use App\Jobs\PenalizeNonattendance;
 use App\Jobs\CheckClientPlansExpiration;
 use App\Jobs\ClearAssistedAchievement;
 use Illuminate\Console\Scheduling\Schedule;
@@ -31,6 +33,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(new CalculateActiveClients())->dailyAt('01:00');
         $schedule->call(new ClearAssistedAchievement())->sundays()->at('23:59:59');
         $schedule->command("validator:kangosReservados")->everyMinute();
+        $schedule->call(function (){$this->penalizeNonattendance();})->dailyAt('23:00');
         //$schedule->command("validator:transaccionesPendientes")->cron("*/5 * * * *");
     }
 
@@ -44,5 +47,12 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
+    }
+
+    private function penalizeNonattendance() : void
+    {
+        $penalizeService = app(PenalizeService::class);
+        $penalizeJob = new PenalizeNonattendance($penalizeService);
+        $penalizeJob();
     }
 }

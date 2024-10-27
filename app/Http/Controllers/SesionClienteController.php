@@ -10,9 +10,9 @@ use App\Exceptions\NoVacancyException;
 use App\Exceptions\PenalizedException;
 use App\Exceptions\ShoeSizeNotSupportedException;
 use App\Exceptions\WeightNotSupportedException;
-use App\Feature;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Services\KangooService;
+use App\Http\Services\PenalizeService;
 use App\Mail\CourtesyScheduled;
 use App\Model\Cliente;
 use App\Model\Evento;
@@ -20,12 +20,9 @@ use App\Model\Peso;
 use App\Model\Review;
 use App\Model\ReviewSession;
 use App\Model\SesionCliente;
-use App\Penalized;
 use App\RemainingClass;
 use App\Repositories\ClientPlanRepository;
-use App\Repositories\FeatureRepository;
 use App\User;
-use App\Utils\FeaturesEnum;
 use App\Utils\PlanTypesEnum;
 use Carbon\Carbon;
 use Exception;
@@ -42,13 +39,13 @@ use App\Achievements\AssistedToClassAchievement;
 
 class SesionClienteController extends Controller
 {
-    private FeatureRepository $featureRepository;
     private KangooService $kangooService;
+    private PenalizeService $penalizeService;
 
-    public function __construct(KangooService $kangooService, FeatureRepository $featureRepository)
+    public function __construct(KangooService $kangooService, PenalizeService $penalizeService)
     {
         $this->kangooService = $kangooService;
-        $this->featureRepository = $featureRepository;
+        $this->penalizeService = $penalizeService;
     }
 
     public function save(int $eventId, int $clienteId, $sesionClienteId, $startDate, $endDate)
@@ -220,7 +217,7 @@ class SesionClienteController extends Controller
         $startDateTime = $formattedStartDate . ' ' . $startHour;
         $endDateTime = Carbon::parse($endDate)->format('Y-m-d') . ' ' . $endHour;
         if($validateVacancy){
-            $this->checkPenalizeNonAttendance($event, $client);
+            $this->penalizeService->checkPenalizeNonAttendance($event, $client);
             $this->validateVacancy($event, $startDateTime, $endDateTime, $client);
         }
         if(filter_var($isRenting, FILTER_VALIDATE_BOOLEAN)){
@@ -430,21 +427,5 @@ class SesionClienteController extends Controller
         return response()->json([
             'success' => true
         ], 200);
-    }
-
-    /**
-     * @throws PenalizedException
-     */
-    private function checkPenalizeNonAttendance($event, $client)
-    {
-        $penalized = Penalized::where('user_id', $client->usuario_id)
-            ->where('class_type',  $event->classType->id)
-            ->where('from_date', '<=', Carbon::now())
-            ->where('to_date', '>=', Carbon::now())
-            ->first();
-        if($this->featureRepository->isFeatureActive(FeaturesEnum::PENALIZE_NON_ATTENDANCE) && $penalized)
-        {
-            throw new PenalizedException($event->classType->type, $penalized->to_date);
-        }
     }
 }
