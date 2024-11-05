@@ -21,12 +21,12 @@ class PenalizeService
     /**
      * @throws PenalizedException
      */
-    public function checkPenalizeNonAttendance($event, $client)
+    public function checkPenalizeNonAttendance($event, $client, $eventMoment)
     {
         $penalized = Penalized::where('user_id', $client->usuario_id)
             ->where('class_type',  $event->classType->id)
-            ->where('from_date', '<=', Carbon::now())
-            ->where('to_date', '>=', Carbon::now())
+            ->where('from_date', '<=', $eventMoment)
+            ->where('to_date', '>=', $eventMoment)
             ->first();
         if($this->featureRepository->isFeatureActive(FeaturesEnum::PENALIZE_NON_ATTENDANCE) && $penalized)
         {

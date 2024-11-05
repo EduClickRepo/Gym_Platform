@@ -217,7 +217,7 @@ class SesionClienteController extends Controller
         $startDateTime = $formattedStartDate . ' ' . $startHour;
         $endDateTime = Carbon::parse($endDate)->format('Y-m-d') . ' ' . $endHour;
         if($validateVacancy){
-            $this->penalizeService->checkPenalizeNonAttendance($event, $client);
+            $this->penalizeService->checkPenalizeNonAttendance($event, $client, $startDateTime);
             $this->validateVacancy($event, $startDateTime, $endDateTime, $client);
         }
         if(filter_var($isRenting, FILTER_VALIDATE_BOOLEAN)){
