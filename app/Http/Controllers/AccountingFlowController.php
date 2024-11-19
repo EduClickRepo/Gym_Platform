@@ -44,7 +44,7 @@ class AccountingFlowController extends Controller
 
             $positivePettyCashSum = $positiveValuesPettyCash->sum('amount');
 
-            $negativeValuesPettyCash = TransaccionesPagos::with(['user', 'payment'])
+            $negativeValuesPettyCash = TransaccionesPagos::with(['user', 'createdBy', 'payment'])
                 ->where('amount', '<', 0)
                 ->where('is_petty_cash', '=', 1)
                 ->where('created_at', '>=', $startDate->startOfDay())

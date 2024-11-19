@@ -33,7 +33,7 @@
                     <tbody>
                     @foreach ($positiveValuesMayorCash as $positive)
                         <tr>
-                            <td>{{ $positive->user->fullName }}</td>
+                            <td>{{ $positive->user?->fullName }}</td>
                             <td class="currency">$ {{ number_format($positive->amount, 0, ',', '.') }}</td>
                             <td>{{ $positive->created_at->format('Y-m-d') }}</td>
                             <td>{{ $positive->payment->name }}</td>
@@ -61,7 +61,7 @@
                     <tbody>
                     @foreach ($negativeValuesMayorCash as $negative)
                         <tr>
-                            <td>{{ $negative->user->fullName }}</td>
+                            <td>{{ $negative->user?->fullName }}</td>
                             <td class="currency">$ {{ number_format($negative->amount, 0, ',', '.') }}</td>
                             <td>{{ $negative->created_at->format('Y-m-d') }}</td>
                             <td>{{ $negative->payment->name }}</td>
@@ -92,7 +92,7 @@
                     <tbody>
                     @foreach ($positiveValuesPettyCash as $positive)
                         <tr>
-                            <td>{{ $positive->user->fullName }}</td>
+                            <td>{{ $positive->user?->fullName }}</td>
                             <td class="currency">$ {{ number_format($positive->amount, 0, ',', '.') }}</td>
                             <td>{{ $positive->created_at->format('Y-m-d') }}</td>
                             <td>{{ $positive->payment->name }}</td>
@@ -122,7 +122,7 @@
                     <tbody>
                     @foreach ($negativeValuesPettyCash as $negative)
                         <tr>
-                            <td>{{ $negative->user->fullName }}</td>
+                            <td>{{ $negative->createdBy?->fullName }}</td>
                             <td class="currency">$ {{ number_format($negative->amount, 0, ',', '.') }}</td>
                             <td>{{ $negative->created_at->format('Y-m-d') }}</td>
                             <td>{{ $negative->payment->name }}</td>

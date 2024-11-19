@@ -32,6 +32,11 @@ class TransaccionesPagos extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function payment()
     {
         return $this->belongsTo(PaymentMethod::Class, 'payment_method_id');
