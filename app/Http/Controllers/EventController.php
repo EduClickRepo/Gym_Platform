@@ -157,7 +157,7 @@ class EventController extends Controller
     public function loadNextSessions(int $branchId = null, int $classTypeId = null){
         $scheduleUntil = Feature::where('feature', '=', 'schedule_until')->first();
         if(!$scheduleUntil || Auth::user()?->hasFeature(FeaturesEnum::SEE_EXTENDED_SCHEDULE)){
-            $endDate = today()->addDays(7);
+            $endDate = today()->addDays(6);
         }else{
             $endDate = $scheduleUntil->active_at;
         }
