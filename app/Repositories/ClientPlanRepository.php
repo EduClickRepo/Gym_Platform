@@ -26,7 +26,12 @@ class ClientPlanRepository
             )
             ->distinct()
             ->where('client_id', $clientId ?? Auth::id())
-            ->when(!$frozenPlans, function ($query) {
+            ->when(!$frozenPlans, function ($query) use ($event) {
+                if($event){
+                    return $query->where(function($q) use ($event) {
+                        return $q->where('frozen_from', '>', $event->fecha_inicio)->orWhere('frozen_to', '<', $event->fecha_inicio)->orWhereNull('frozen_from');
+                    });
+                }
                 return $query->where(function($q) {
                     return $q->where('frozen_from', '>', today())->orWhere('frozen_to', '<', today())->orWhereNull('frozen_from');
                 });
@@ -59,7 +64,12 @@ class ClientPlanRepository
 
 
         $clientPlan = ClientPlan::where('client_id', $clientId ?? Auth::id())
-            ->when(!$frozenPlans, function ($query) {
+            ->when(!$frozenPlans, function ($query) use ($event) {
+                if($event){
+                    return $query->where(function($q) use ($event) {
+                        return $q->where('frozen_from', '>', $event->fecha_inicio)->orWhere('frozen_to', '<', $event->fecha_inicio)->orWhereNull('frozen_from');
+                    });
+                }
                 return $query->where(function($q) {
                     return $q->where('frozen_from', '>', today())->orWhere('frozen_to', '<', today())->orWhereNull('frozen_from');
                 });
