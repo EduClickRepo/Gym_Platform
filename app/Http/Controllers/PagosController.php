@@ -37,8 +37,9 @@ class PagosController extends Controller
         $status = $request->data['transaction']['status'];
         $amount = $request->data['transaction']['amount_in_cents'];
         $timestamp = $request->timestamp;
+        $id = $request->data['transaction']['id'];
         $reference = $request->data['transaction']['reference'];
-        $this->verifySignature($signature, $reference, $status, $amount, $timestamp);
+        $this->verifySignature($signature, $id, $status, $amount, $timestamp);
         $paymentInfo = $this->paymentService->getPaymentInfo($reference);
         $response_code = PayStatusMapper::getMappedValue($status);
         if($this->verifyProcessing($reference, $response_code)){
@@ -60,10 +61,10 @@ class PagosController extends Controller
         });
     }
 
-    private function verifySignature(string $signature,string $reference,string $status,string $amount,string $timestamp)
+    private function verifySignature(string $signature,string $id,string $status,string $amount,string $timestamp)
     {
-        $integrity =env('INTEGRITY_SIGNATURE');
-        $expectedSignature = hash('sha256', "{$reference}{$status}{$amount}{$timestamp}{$integrity}");
+        $integrity =env('EVENT_SIGNATURE');
+        $expectedSignature = hash('sha256', "{$id}{$status}{$amount}{$timestamp}{$integrity}");
         if (!$signature || $signature !== $expectedSignature) {
             abort(403, 'Invalid Firm');
         }

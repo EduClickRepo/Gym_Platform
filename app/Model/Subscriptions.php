@@ -14,26 +14,6 @@ class Subscriptions extends Model
     protected $table = 'subscriptions';
 
     protected $fillable = [
-        'user_id', 'payment_source_id', 'plan_id', 'amount', 'currency',
+        'user_id', 'payment_source_id', 'plan_id', 'amount', 'currency'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function payment()
-    {
-        return $this->belongsTo(PaymentMethod::Class, 'payment_method_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::Class, 'category_id');
-    }
 }
