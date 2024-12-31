@@ -4,6 +4,6 @@ namespace App\Utils;
 
 enum PayTypesEnum: string
 {
-    case Plan = 'Plan';
-    case Session = 'Session';
+    case Plan = '01';
+    case Session = '02';
 }

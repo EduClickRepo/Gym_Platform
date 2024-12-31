@@ -1,4 +1,4 @@
-<div style="width: 270px;" class="card themed-block text-center py-4 px-1 mb-5 mx-auto d-flex flex-column align-items-center" style="height: 75vh">
+<div style="width: 270px;" class="card themed-block text-center py-4 px-1 mb-5 mx-auto d-flex flex-column align-items-center @if($plan->highlighted) highlighted-plan @endif" style="height: 75vh">
     <div class="mx-auto mb-auto">
         <h2>Membresía</h2>
         <h2>{{$plan->name}}</h2>
@@ -7,20 +7,90 @@
         </div>
     </div>
     <div class="mx-auto w-75">
-        <h2><strong> ${{number_format($plan->price, 0, '.', ',')}}</strong></h2>
+        <div class="form-group">
+            @if($plan->automatic_debt_price)
+                <select id="paymentOptions" name="paymentOptions" class="form-control">
+                    <option value="automatic" selected>Débito Automático</option>
+                    <option value="single">Pago Único</option>
+                </select>
 
-        <table class="table m-0">
-            <tbody>
-            @foreach(\App\ClassType::all() as $class)
-                <tr @if($loop->first)class="border-top"@endif>
-                    <td class="border-top-0 p-0 text-left align-middle">{{$class->type}}</td>
-                    @if($loop->first)
-                        <td class="border-top-0 text-right align-middle" rowspan="{{$loop->count}}">{{$plan->number_of_shared_classes ?? '∞'}}</td>
-                    @endif
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
+                <div id="price-container" class="mt-3">
+                    <h2 class="price-display">
+                <span id="price-original" class="text-muted price-transition" style="text-decoration: line-through; font-size: 16px;">
+                    ${{ number_format($plan->price, 0, '.', ',') }}
+                </span>
+                        <br>
+                        <span id="price-discounted" class="text-primary price-transition" style="font-size: 24px;">
+                    ${{ number_format($plan->automatic_debt_price, 0, '.', ',') }}
+                </span>
+                    </h2>
+                </div>
+            @else
+                <h2><strong> ${{ number_format($plan->price, 0, '.', ',') }}</strong></h2>
+            @endif
+        </div>
+
+        <style>
+            .price-transition {
+                transition: all 2s ease; /* Transición de todos los estilos aplicados */
+            }
+
+            .hidden {
+                opacity: 0; /* Oculta visualmente con una transición suave */
+                pointer-events: none; /* Evita interacción mientras está oculto */
+            }
+
+            .visible {
+                opacity: 1;
+            }
+        </style>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const select = document.getElementById('paymentOptions');
+                const originalPrice = document.getElementById('price-original');
+                const discountedPrice = document.getElementById('price-discounted');
+
+                // Manejar el cambio de selección
+                select.addEventListener('change', function () {
+                    if (select.value === 'automatic') {
+                        // Mostrar precio reducido con transición
+                        originalPrice.style.textDecoration = 'line-through';
+                        originalPrice.style.fontSize = '16px';
+                        originalPrice.classList.add('price-transition');
+
+                        discountedPrice.classList.remove('hidden');
+                        discountedPrice.classList.add('visible');
+                        discountedPrice.style.fontSize = '24px';
+                    } else if (select.value === 'single') {
+                        // Mostrar solo el precio original con transición
+                        originalPrice.style.textDecoration = 'none';
+                        originalPrice.style.fontSize = '24px';
+                        originalPrice.classList.add('price-transition');
+
+                        discountedPrice.classList.add('hidden');
+                        discountedPrice.classList.remove('visible');
+                    }
+                });
+
+                // Configuración inicial
+                if (select.value === 'automatic') {
+                    originalPrice.style.textDecoration = 'line-through';
+                    originalPrice.style.fontSize = '16px';
+                    originalPrice.classList.add('price-transition');
+
+                    discountedPrice.classList.remove('hidden');
+                    discountedPrice.classList.add('visible');
+                    discountedPrice.style.fontSize = '24px';
+                }
+            });
+        </script>
+
+        @if($plan->unlimited)
+            <p>sesiones ilimitadas</p>
+        @else
+            <p>{{$plan->number_of_shared_classes }} sesiones</p>
+        @endif
         {{--FIT-57: Uncomment this if you want specific classes
         @isset($plan->sharedClasses)
             <table class="table m-0">
@@ -79,10 +149,11 @@
             <tbody>
             <tr class="border-top">
                 <td class="border-top-0 text-left align-middle">Duración</td>
-                <td class="border-top-0 text-right align-middle" style="width: 90%">{{$plan->duration_days}} días</td>
+                <td class="border-top-0 text-right align-middle" style="width: 90%">{{$plan->duration}} {{$plan->duration_type }}</td>
             </tr>
             </tbody>
         </table>
     </div>
-    <a style="bottom: -20px" class="btn color-white themed-btn mt-3 position-absolute" @if(auth()->guest()) href="{{ route('register') }}" @else onclick="showPayModal({{$plan}})" @endif>Seleccionar</a>
+
+    <a style="bottom: -20px" class="btn color-white themed-btn mt-3 position-absolute" @if(auth()->guest()) href="{{ route('register') }}" @else onclick="showPayModal({{ $plan }}, this.parentElement.querySelector('#paymentOptions'))" @endif>Seleccionar</a>
 </div>

@@ -9,23 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class TransaccionesPagos extends Model
+class Subscriptions extends Model
 {
-    protected $table = 'transacciones_pagos';
-    use SoftDeletes;
+    protected $table = 'subscriptions';
 
     protected $fillable = [
-        'ref_payco', 'payment_method_id', 'codigo_respuesta', 'respuesta', 'amount', 'data', 'user_id', 'category_id'
+        'user_id', 'payment_source_id', 'plan_id', 'amount', 'currency',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->created_by = Auth::id() ?? 1;
-        });
-    }
 
     public function user()
     {

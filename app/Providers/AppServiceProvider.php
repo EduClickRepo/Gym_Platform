@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Http\Services\ProcessPaymentInterface;
+use App\Http\Services\ProcessPaymentWompi;
 use App\Http\Services\SendMessageInterface;
 use App\Http\Services\SendWhatsAppMessage;
 use Carbon\Carbon;
@@ -42,5 +44,6 @@ class AppServiceProvider extends ServiceProvider
         define('HOURS_TO_CANCEL_TRAINING', 4);
         define('MONTHS_FOR_NEW_HEALTH_ASSESSMENT', 2);
         $this->app->bind(SendMessageInterface::class, SendWhatsAppMessage::class);
+        $this->app->bind(ProcessPaymentInterface::class, ProcessPaymentWompi::class);
     }
 }

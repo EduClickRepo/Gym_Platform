@@ -60,6 +60,7 @@ return [
     'success_purchase' => 'Felicidades por ese salto. Tu Compra fue exitosa',
     'failed_purchase' => 'Compra fallida, que no te falte el último salto',
     'pending_purchase' => 'Tu transacción sigue procesandonse',
+    'error_purchase' => 'Error desconocido en la compra, por favor intenta más tarde.',
     'quotas_not_available' => 'Los cupos están llenos, pero puedes reservar tu cupo para la siguiente clase',
     'not_supported_shoe_size' => 'No encuentro tallas de Kangoos en el sistema, puedes escribir al instructor para solicitar ayudar',
     'reserved_5_minutes' => 'Recuerda completar tu compra en los siguientes 5 minutos.',

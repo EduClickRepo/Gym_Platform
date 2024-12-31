@@ -83,7 +83,6 @@ Route::group(['middleware' => 'auth'], function () {
     //Route::get('/eventos', [SesionEventoController::class, 'fullcalendar'])->name('eventos');
     Route::post('/agendar', [SesionClienteController::class, 'save'])->name('agendar');
 
-    Route::post('/response_payment', [PagosController::class, 'responsePayment']);
     Route::get('/response_payment', [PagosController::class, 'responsePayment']);
 
     Route::post('/scheduleEvent', [SesionClienteController::class, 'scheduleEvent'])->name('scheduleEvent');
@@ -102,6 +101,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('{comment}/reply/', [UserCommentController::class, 'reply'])->name('replyUserComment');
 
     Route::post('/reorderKangoos', [EventController::class, 'reorderKangoos'])->name('reorderKangoos');
+
+    Route::post('/paymentSubscription',[PagosController::class, 'paymentSubscription'])->name('paymentSubscription');
 });
 
 Route::group(['middleware' => 'admin'], function () {
@@ -192,4 +193,6 @@ Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '
     Route::get('/TyC', function () {
         return view('termsAndConditionsPage');
     });
+
+    Route::post('/webhook_payment', [PagosController::class, 'responsePayment']);
 /*End Open routes*/

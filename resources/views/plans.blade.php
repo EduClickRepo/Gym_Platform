@@ -4,6 +4,13 @@
     @lang('general.Plans')
 @endsection
 
+@push('head-content')
+    <script
+            type="text/javascript"
+            src="https://checkout.wompi.co/widget.js"
+    ></script>
+@endpush
+
 @section('content')
     <div class="d-md-flex justify-content-between justify-content-md-around w-75 m-auto flex-wrap">
         @foreach($plans as $plan)
@@ -19,35 +26,67 @@
     <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
 
     <script>
-        var handler = ePayco.checkout.configure({
-            key: "{{env('EPAYCO_PUBLIC_KEY')}}",
-            test: Boolean({{env('EPAYCO_TEST')}})
-        });
-        var data = {
-            //Parametros compra (obligatorio)
-            name: "{{__('general.transaction_name')}}",
-            description: "{{__('general.transaction_name')}}",
-            invoice: "",
-            tax_base: "0",
-            tax: "0",
-            country: "co",
-            lang: "es",
+        function createSubscription(token, amountInCents, currency, planId) {
+            return new Promise((resolve, reject) => {
+                $('#loading-spinner').show();
 
-            //Onpage="false" - Standard="true"
-            external: "false",
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('paymentSubscription') }}",
+                    method: "POST",
+                    data: {
+                        token: token,
+                        amount: amountInCents,
+                        currency: currency,
+                        planId: planId
+                    },
+                    success: function (data) {
+                        $('#loading-spinner').hide();
+                        resolve(data);
+                    },
+                    error: function (error) {
+                        $('#loading-spinner').hide();
+                        reject(error);
+                    }
+                });
+            });
+        }
 
-            //Atributos opcionales
-            response: "{{config('app.url')}}/response_payment",
-        };
+        async function showPayModal(plan, selectElement) {
+            const paymentOption = selectElement.value;
+            const currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}';
+            const checkoutOptions = {
+                publicKey: 'pub_test_oAWNq7eMtFofu3M2iCbhgiIH5K1437n1',
+            };
 
-        function showPayModal(plan) {
-            data.currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ? \Illuminate\Support\Facades\Session::get('currency_id') : 'COP'}}';
-            data.amount = plan.price
-                data.extra1 = '{{ \App\Utils\PayTypesEnum::Plan }}'
-            data.extra2 = {{ \Illuminate\Support\Facades\Auth::id() }}
-                data.extra3 = plan.id
-                data.type_doc_billing = "cc";
-            handler.open(data)
+            if (paymentOption === 'automatic') {
+                checkoutOptions.widgetOperation = 'tokenize';
+                var amountInCents = plan.automatic_debt_price ?? 0;
+            } else {
+                checkoutOptions.amountInCents = plan.price;
+                checkoutOptions.currency = currency;
+                const timestamp = Date.now()
+                checkoutOptions.reference = `GP-{{ \Illuminate\Support\Facades\Auth::id()}}-{{ \App\Utils\PayTypesEnum::Plan->value}}-${plan.id}-${timestamp}`;
+            }
+
+            const checkout = new WidgetCheckout(checkoutOptions);
+
+            checkout.open(async function (result) {
+                if (paymentOption === 'automatic') {
+                    var token = result.payment_source.token;
+
+                    try {
+                        const response = await createSubscription(token, amountInCents, currency, plan.id);
+                        console.log("Subscription created:", response);
+                        location.reload();
+                    } catch (error) {
+                        console.error("Error creating subscription:", error);
+                    }
+                }
+                // TODO process unique payment
+            });
         }
     </script>
     <!--END PAYMENT-->

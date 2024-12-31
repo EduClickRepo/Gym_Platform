@@ -9,7 +9,9 @@ use App\Model\Plan;
 use App\Model\TransaccionesPagos;
 use App\PaymentMethod;
 use App\RemainingClass;
+use App\Repositories\ClientPlanRepository;
 use App\Utils\CategoriesEnum;
+use App\Utils\DurationTypesEnum;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,29 +20,46 @@ use Illuminate\Support\Facades\Session;
 
 class ClientPlanController extends Controller
 {
-    public function save(int $clientId,int $planId, int $payment_id, $payDay = null, int $accumulativeClasses = 0)
+    public function save(int $clientId, int $planId, int $payment_id, $creationDay = null, int $accumulativeClasses = 0)
     {
-        $payDay = $payDay ?? Carbon::now();
+        $creationDay = $creationDay ?? Carbon::now();
+        $expirationDate = $creationDay;
+        $clientPlanRepository = new ClientPlanRepository();
+        $lastPlan = $clientPlanRepository->findValidClientPlan(clientId: $clientId, frozenPlans: true);
+        if($lastPlan){
+            //TODO si pasa de un plan que le quedan clases a un plan ilimitado, el plan ilimitado quedaría con mayor extensión del debido, porque la extensión del plan por clases se convierte en ilimitado
+            //no se necesita chequear que la fecha sea mayor, porque eso ya está dado por el    findValidClientPlan
+            $expirationDate =  $lastPlan->expiration_date;
+            $accumulativeClasses = $lastPlan->remaining_shared_classes;
+            $lastPlan->expiration_date = now();
+            $lastPlan->save();
+        }
 
         $clientPlan = new ClientPlan();
         $clientPlan->client_id = $clientId;
         $plan = Plan::find($planId);
         $clientPlan->plan_id = $planId;
         $clientPlan->remaining_shared_classes = $plan-> number_of_shared_classes ?  $plan-> number_of_shared_classes + $accumulativeClasses : null;
-        $clientPlan->expiration_date = $payDay->copy()->addDays($plan->duration_days)->endOfDay();
+        $durationType = DurationTypesEnum::from($plan->duration_type);
+        $clientPlan->expiration_date = match ($durationType) {
+            DurationTypesEnum::day => $expirationDate->copy()->addDays($plan->duration)->endOfDay(),
+            DurationTypesEnum::month => $expirationDate->copy()->addMonths($plan->duration)->endOfDay(),
+            DurationTypesEnum::year => $expirationDate->copy()->addYears($plan->duration)->endOfDay(),
+        };
         $clientPlan->payment_id = $payment_id;
-        $clientPlan->created_at = $payDay;
+        $clientPlan->created_at = $creationDay;
+        $clientPlan->updated_at = $expirationDate;
         $clientPlan->save();
 
         /*FIT-57: Uncomment this if you want specific classes*/
         foreach ($plan->allClasses as $class){
-            $remainingClass =new RemainingClass();
-            $remainingClass->client_plan_id = $clientPlan->id;
-            $remainingClass->class_type_id = $class->class_type_id;
-            $remainingClass->unlimited = $class->unlimited;
-            $remainingClass->remaining_classes = $class->number_of_classes;
-            $remainingClass->equipment_included = $class->equipment_included;
-            $remainingClass->save();
+            $remainingClasses =new RemainingClass();
+            $remainingClasses->client_plan_id = $clientPlan->id;
+            $remainingClasses->class_type_id = $class->class_type_id;
+            $remainingClasses->unlimited = $class->unlimited;
+            $remainingClasses->remaining_classes = $class->number_of_classes;
+            $remainingClasses->equipment_included = $class->equipment_included;
+            $remainingClasses->save();
         }
         /*FIT-57: end block code*/
     }
@@ -78,7 +97,9 @@ class ClientPlanController extends Controller
                 $lastPlan->expiration_date = now();
                 $lastPlan->save();
             }
+
             $this->save($request->clientId, $request->planId, $transaction->id,$payDay, $request->accumulateClasses === "on" ? (int)($request->remainingClases) : 0);
+
             Session::put('msg_level', 'success');
             Session::put('msg', __('general.success_save_client_plan'));
             Session::save();
