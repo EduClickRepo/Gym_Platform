@@ -3,41 +3,41 @@
         <h2>Membresía</h2>
         <h2>{{$plan->name}}</h2>
         <div style="height: 160px" class="d-flex my-3">
-            <img height="100%" src="{{asset("images/".$plan->image)}}" class="m-auto"/>
+            <img height="100%" src="{{asset("images/".$plan->image)}}" class="m-auto" />
         </div>
     </div>
     <div class="mx-auto w-75">
         <div class="form-group">
-            @if($plan->automatic_debt_price)
-                <select id="paymentOptions" name="paymentOptions" class="form-control">
+        @if($plan->automatic_debt_price)
+                <select name="paymentOptions" class="form-control payment-options">
                     <option value="automatic" selected>Débito Automático</option>
                     <option value="single">Pago Único</option>
                 </select>
 
-                <div id="price-container" class="mt-3">
+                <div class="mt-3">
                     <h2 class="price-display">
-                <span id="price-original" class="text-muted price-transition" style="text-decoration: line-through; font-size: 16px;">
-                    ${{ number_format($plan->price, 0, '.', ',') }}
-                </span>
+                        <span class="text-muted price-original price-transition" style="text-decoration: line-through; font-size: 16px;">
+                            ${{ number_format($plan->price, 0, '.', ',') }}
+                        </span>
                         <br>
-                        <span id="price-discounted" class="text-primary price-transition" style="font-size: 24px;">
-                    ${{ number_format($plan->automatic_debt_price, 0, '.', ',') }}
-                </span>
+                        <span class="text-primary price-discounted price-transition" style="font-size: 24px;">
+                            ${{ number_format($plan->automatic_debt_price, 0, '.', ',') }}
+                        </span>
                     </h2>
                 </div>
             @else
-                <h2><strong> ${{ number_format($plan->price, 0, '.', ',') }}</strong></h2>
+                <h2><strong>${{ number_format($plan->price, 0, '.', ',') }}</strong></h2>
             @endif
         </div>
 
         <style>
             .price-transition {
-                transition: all 2s ease; /* Transición de todos los estilos aplicados */
+                transition: all 2s ease;
             }
 
             .hidden {
-                opacity: 0; /* Oculta visualmente con una transición suave */
-                pointer-events: none; /* Evita interacción mientras está oculto */
+                opacity: 0;
+                pointer-events: none;
             }
 
             .visible {
@@ -47,14 +47,39 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                const select = document.getElementById('paymentOptions');
-                const originalPrice = document.getElementById('price-original');
-                const discountedPrice = document.getElementById('price-discounted');
+                const cards = document.querySelectorAll('.card');
 
-                // Manejar el cambio de selección
-                select.addEventListener('change', function () {
+                cards.forEach(card => {
+                    const select = card.querySelector('.payment-options');
+                    const originalPrice = card.querySelector('.price-original');
+                    const discountedPrice = card.querySelector('.price-discounted');
+
+                    if (!select || !originalPrice || !discountedPrice) return;
+
+                    // Manejar el cambio de selección
+                    select.addEventListener('change', function () {
+                        if (select.value === 'automatic') {
+                            // Mostrar precio reducido con transición
+                            originalPrice.style.textDecoration = 'line-through';
+                            originalPrice.style.fontSize = '16px';
+                            originalPrice.classList.add('price-transition');
+
+                            discountedPrice.classList.remove('hidden');
+                            discountedPrice.classList.add('visible');
+                            discountedPrice.style.fontSize = '24px';
+                        } else if (select.value === 'single') {
+                            // Mostrar solo el precio original con transición
+                            originalPrice.style.textDecoration = 'none';
+                            originalPrice.style.fontSize = '24px';
+                            originalPrice.classList.add('price-transition');
+
+                            discountedPrice.classList.add('hidden');
+                            discountedPrice.classList.remove('visible');
+                        }
+                    });
+
+                    // Configuración inicial
                     if (select.value === 'automatic') {
-                        // Mostrar precio reducido con transición
                         originalPrice.style.textDecoration = 'line-through';
                         originalPrice.style.fontSize = '16px';
                         originalPrice.classList.add('price-transition');
@@ -62,32 +87,13 @@
                         discountedPrice.classList.remove('hidden');
                         discountedPrice.classList.add('visible');
                         discountedPrice.style.fontSize = '24px';
-                    } else if (select.value === 'single') {
-                        // Mostrar solo el precio original con transición
-                        originalPrice.style.textDecoration = 'none';
-                        originalPrice.style.fontSize = '24px';
-                        originalPrice.classList.add('price-transition');
-
-                        discountedPrice.classList.add('hidden');
-                        discountedPrice.classList.remove('visible');
                     }
                 });
-
-                // Configuración inicial
-                if (select.value === 'automatic') {
-                    originalPrice.style.textDecoration = 'line-through';
-                    originalPrice.style.fontSize = '16px';
-                    originalPrice.classList.add('price-transition');
-
-                    discountedPrice.classList.remove('hidden');
-                    discountedPrice.classList.add('visible');
-                    discountedPrice.style.fontSize = '24px';
-                }
             });
         </script>
 
         @if($plan->unlimited)
-            <p>sesiones ilimitadas</p>
+            <p>Sesiones ilimitadas</p>
         @else
             <p>{{$plan->number_of_shared_classes }} sesiones</p>
         @endif
