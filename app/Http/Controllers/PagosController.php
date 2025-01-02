@@ -170,7 +170,7 @@ class PagosController extends Controller
         $id = TransaccionesPagos::updateOrCreate(
             ['ref_payco' => $ref_payco], // Condición para buscar el registro
             [   // Datos a crear o actualizar
-                'payment_method_id' => 1,
+                'payment_method_id' => 9,
                 'codigo_respuesta' => $cod_response,
                 'respuesta' => $response_reason_text,
                 'amount' => $amount,
@@ -207,33 +207,19 @@ class PagosController extends Controller
         return redirect()->back();
     }
 
-    public function paymentIntegritySignature(float $amount, string $currency, string $planId, string $expirationTime = null){
-        $userId = auth()->id();
-        $prefix = "GP";
-        $timestamp = now()->timestamp;
-        $payType = PayTypesEnum::Plan->value;
-        $reference = "{$prefix}-{$userId}-{$payType}-{$planId}-{$timestamp}";
-        $expirationTime = $expirationTime ?? '';
-        $integrity =env('INTEGRITY_SIGNATURE');
-        $signature = hash('sha256', "{$reference}{$amount}{$currency}{$expirationTime}{$integrity}");
-        return [
-            'reference' => $reference,
-            'signature' => $signature,
-            'currency' => $currency,
-        ];
-    }
-
     public function paymentSubscription(Request $request){
         list($acceptanceToken, $personalDataAuth) = $this->getAcceptanceTokens();
-        $id = $this->createPaymentSource($request->token, $acceptanceToken, $personalDataAuth);
+        $paymentSourceId = $this->createPaymentSource($request->token, $acceptanceToken, $personalDataAuth);
+        $userId = auth()->user()->id;
         Subscriptions::create([
-            'user_id' => auth()->user()->id,
-            'payment_source_id' => $id,
+            'user_id' => $userId,
+            'payment_source_id' => $paymentSourceId,
             'plan_id' => $request->planId,
             'amount' => $request->amount,
             'currency' => $request->currency,
         ]);
-        $this->makePayment($id, $request->amount, $request->currency, $request->planId);
+        //TODO show message subscripción creada
+        $this->makePayment($userId, $paymentSourceId, $request->amount, $request->currency, $request->planId);
     }
 
     private function getAcceptanceTokens()
@@ -246,7 +232,6 @@ class PagosController extends Controller
             $acceptanceToken = $data['data']['presigned_acceptance']['acceptance_token'];
             $personalDataAuthToken = $data['data']['presigned_personal_data_auth']['acceptance_token'];
             return [$acceptanceToken, $personalDataAuthToken];
-
         } else {
             return [
                 'error' => $response->status(),
@@ -257,7 +242,7 @@ class PagosController extends Controller
 
     private function createPaymentSource(string $token, string $acceptanceToken, string $personalDataAuth)
     {
-        $url = env('WOMPI_URL', 'https://sandbox.wompi.co/').'v1/payment_sources';
+        $url = env('WOMPI_URL').'v1/payment_sources';
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . env('WOMPI_PRIVATE_KEY'),
@@ -281,24 +266,9 @@ class PagosController extends Controller
         }
     }
 
-    private function makePayment(string $id, float $amount, string $currency, string $planId)
+    private function makePayment(string $userId, string $payment_source_id, float $amount, string $currency, string $planId)
     {
-        $signature = $this->paymentIntegritySignature($amount, $currency, $planId);
-        $url = env('WOMPI_URL', 'https://sandbox.wompi.co/').'v1/transactions';
-
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . env('WOMPI_PRIVATE_KEY'),
-        ])->post($url, [
-            'amount_in_cents' => $amount,
-            'currency' => $currency,
-            'signature' => $signature['signature'],
-            'customer_email' => auth()->user()->email,//TODO get email from user when second automatic pay
-            'payment_method' => [
-                "installments" => 12
-            ],
-            'reference' => $signature['reference'],
-            'payment_source_id' => $id
-        ]);
+       $response = $this->paymentService->makePayment($userId, $payment_source_id, $amount, $currency, $planId, auth()->user()->email);
 
         if ($response->successful()) {
             $data = $response->json();
@@ -332,6 +302,5 @@ class PagosController extends Controller
                 'message' => $response->body(),
             ];
         }
-
     }
 }
