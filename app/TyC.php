@@ -9,5 +9,5 @@ class TyC extends Model
 {
     use HasFactory;
 
-    protected $table = 'TyC';
+    protected $table = 'tyc';
 }
