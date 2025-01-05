@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\TyC;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
@@ -130,7 +131,10 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        $lastTyC = TyC::orderBy('created_at', 'desc')->first();
+        if ($user && $lastTyC && !$user->hasTyC($lastTyC->id)) {
+            session()->put('show_terms_modal', true);
+        }
     }
 
     /**

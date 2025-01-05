@@ -93,6 +93,28 @@
     @stack('head-content')
 </head>
 <body>
+    @if(session('show_terms_modal'))
+        <div class="modal fade" id="newTyCModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Actualización terminos y condiciones</h5>
+                    </div>
+                    <div class="modal-body">
+                        Hola Girly, hemos actualizado nuestros términos y condiciones, por favor leelos atentamente.
+                    </div>
+                    <div class="modal-footer">
+                        <form id="signTyC" method="POST" action="{{ route('signTyC') }}" aria-label="{{ __('Register') }}">
+                            @csrf
+                            @include('termsAndConditionsModal')
+                            <button type="submit" class="btn btn-primary" id="botonConfirmar">Confirmar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div id="loading-spinner" style="display: none;">
         <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
@@ -233,7 +255,17 @@
         <script src="{{asset('js/app.js')}}"></script>
     @endauth
 
+    @stack('modals')
+
     @stack('scripts')
+
+    @if(session('show_terms_modal'))
+        <script>
+            $(document).ready(function(){
+                $('#newTyCModal').modal({show: true});
+            });
+        </script>
+    @endif
 
     @if(session('msg'))
         <script>

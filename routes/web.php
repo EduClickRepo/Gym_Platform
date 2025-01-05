@@ -22,6 +22,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SesionClienteController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\TyCController;
 use App\Http\Controllers\UserCommentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
@@ -103,6 +104,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/reorderKangoos', [EventController::class, 'reorderKangoos'])->name('reorderKangoos');
 
     Route::post('/paymentSubscription',[PagosController::class, 'paymentSubscription'])->name('paymentSubscription');
+
+    Route::post('/signTyC',[TyCController::class, 'signTyC'])->name('signTyC');
 });
 
 Route::group(['middleware' => 'admin'], function () {

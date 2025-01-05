@@ -148,6 +148,15 @@ class User extends Authenticatable
         return $hasRol->isNotEmpty();
     }
 
+    public function hasTyC(int $tyc_id): bool
+    {
+        $tyc = DB::table('tyc_user')
+            ->where('user_id', $this->id)
+            ->where('tyc_id', $tyc_id)
+            ->get();
+        return $tyc->isNotEmpty();
+    }
+
 
     public function hasFeature(FeaturesEnum $feature): bool
     {

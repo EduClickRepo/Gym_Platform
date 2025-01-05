@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Exceptions\ExistingUserException;
 use App\Http\Controllers\Controller;
 use App\Model\Cliente;
+use App\TyC;
+use App\TyCUser;
 use App\User;
 use App\UserRole;
 use App\Utils\RolsEnum;
@@ -112,6 +114,11 @@ class RegisterController extends Controller
             ]);
             Cliente::create([
                 'usuario_id' => $id
+            ]);
+            $lastTyC = TyC::orderBy('created_at', 'desc')->first();
+            TyCUser::create([
+                'user_id' => $id,
+                'tyc_id' => $lastTyC->id
             ]);
             DB::commit();
             return $user;
