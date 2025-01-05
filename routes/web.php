@@ -175,6 +175,7 @@ Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
     Route::get('/planes', [PlanController::class, 'index'])->name('plans');
+    Route::get('/old/planes', [PlanController::class, 'oldPlans'])->name('oldPlans');
 
     Route::post('notification/get', 'NotificationController@get');
     Route::post('/notification/read', 'NotificationController@read');

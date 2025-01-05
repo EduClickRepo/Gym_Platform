@@ -16,17 +16,24 @@ class PlanController extends Controller
      */
     public function index()
     {
-        $plans = $this->enabledPlans();
+        $plans = $this->enabledPlans(false);
+        return view('plans', ['plans' => $plans]);
+    }
+
+    public function oldPlans()
+    {
+        $plans = $this->enabledPlans(true);
         return view('plans', ['plans' => $plans]);
     }
 
 
-    public function enabledPlans()
+    public function enabledPlans(bool $old)
     {
         return Plan::where(function($q) {
             $q->where('available_plans', '>', 0)
                 ->orWhereNull('available_plans');
             })
+            ->where('old', $old)
             ->whereNull('deleted_at')
             ->get();
     }
