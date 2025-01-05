@@ -16,8 +16,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <object data="{{asset('pdf/terminos_y_condicionesV2.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
-                        <embed src="{{asset('pdf/terminos_y_condicionesV2.pdf')}}" type='application/pdf' width="100%" height="100%" />
+
+                    <object data="{{asset('pdf/Terminos_y_condiciones_V2-GRL_PWR.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
+                        <embed src="{{asset('pdf/Terminos_y_condiciones_V2-GRL_PWR.pdf')}}" type='application/pdf' width="100%" height="100%" />
                     </object>
                 </div>
                 <div class="modal-footer">
@@ -34,8 +35,8 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <object data="{{asset('pdf/consentimiento_informadoV2.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
-                        <embed src="{{asset('pdf/consentimiento_informadoV2.pdf')}}" type='application/pdf' width="100%" height="100%" />
+                    <object data="{{asset('pdf/Consentimiento_InformadoV2-GRL_PWR.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
+                        <embed src="{{asset('pdf/Consentimiento_InformadoV2-GRL_PWR.pdf')}}" type='application/pdf' width="100%" height="100%" />
                     </object>
                 </div>
                 <div class="modal-footer">
