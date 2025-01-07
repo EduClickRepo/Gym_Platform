@@ -55,7 +55,7 @@
         }
 
         async function showPayModal(plan, selectElement) {
-            const paymentOption = selectElement.value;
+            const paymentOption = selectElement?.value ?? '';
             const currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}';
             const checkoutOptions = {
                 publicKey: 'pub_test_oAWNq7eMtFofu3M2iCbhgiIH5K1437n1',
@@ -65,7 +65,7 @@
                 checkoutOptions.widgetOperation = 'tokenize';
                 var amountInCents = plan.automatic_debt_price ?? 0;
             } else {
-                checkoutOptions.amountInCents = plan.price;
+                checkoutOptions.amountInCents = plan.price*100;//multiplicado por 100 por los centavos
                 checkoutOptions.currency = currency;
                 const timestamp = Date.now()
                 checkoutOptions.reference = `GP-{{ \Illuminate\Support\Facades\Auth::id()}}-{{ \App\Utils\PayTypesEnum::Plan->value}}-${plan.id}-${timestamp}`;
