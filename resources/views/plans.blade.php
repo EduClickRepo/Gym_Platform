@@ -58,7 +58,7 @@
             const paymentOption = selectElement?.value ?? '';
             const currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}';
             const checkoutOptions = {
-                publicKey: 'pub_test_oAWNq7eMtFofu3M2iCbhgiIH5K1437n1',
+                publicKey: '{{env('WOMPI_PUBLIC_KEY')}}',
             };
 
             if (paymentOption === 'automatic') {
