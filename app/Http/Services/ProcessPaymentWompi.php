@@ -37,7 +37,7 @@ class ProcessPaymentWompi implements ProcessPaymentInterface
         return Http::withHeaders([
             'Authorization' => 'Bearer ' . env('WOMPI_PRIVATE_KEY'),
         ])->post($url, [
-            'amount_in_cents' => $amount,
+            'amount_in_cents' => $amount*100,//multiplicado por 100 por los centavos
             'currency' => $currency,
             'signature' => $signature['signature'],
             'customer_email' => $email,
