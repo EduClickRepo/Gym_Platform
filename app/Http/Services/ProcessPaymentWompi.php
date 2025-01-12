@@ -31,13 +31,14 @@ class ProcessPaymentWompi implements ProcessPaymentInterface
 
     public function makePayment(string $userId, string $payment_source_id, float $amount, string $currency, string $itemId, string $email, int $installments = 12): Response
     {
+        $amount = $amount*100;//multiplicado por 100 por los centavos
         $signature = $this->paymentIntegritySignature($userId, $amount, $currency, $itemId);
         $url = env('WOMPI_URL').'v1/transactions';
 
         return Http::withHeaders([
             'Authorization' => 'Bearer ' . env('WOMPI_PRIVATE_KEY'),
         ])->post($url, [
-            'amount_in_cents' => $amount*100,//multiplicado por 100 por los centavos
+            'amount_in_cents' => $amount,
             'currency' => $currency,
             'signature' => $signature['signature'],
             'customer_email' => $email,

@@ -173,7 +173,7 @@ class PagosController extends Controller
                 'payment_method_id' => 9,
                 'codigo_respuesta' => $cod_response,
                 'respuesta' => $response_reason_text,
-                'amount' => $amount,
+                'amount' => $amount/100,//Se quitan los centavos de WOMPI
                 'data' => json_encode($data),
                 'user_id' => $user_id,
                 'category_id' => Category::where('name', CategoriesEnum::PLANES)->first()->id,
