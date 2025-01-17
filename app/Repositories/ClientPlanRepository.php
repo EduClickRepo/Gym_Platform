@@ -89,7 +89,7 @@ class ClientPlanRepository
                         ->orWhereNull('remaining_shared_classes');
                 });
             })->join('plans', 'client_plans.plan_id', '=', 'plans.id')
-            ->select('client_plans.*', 'plans.name')
+            ->select('client_plans.*', 'plans.name', 'plans.old')
             ->get();
 
         if($multiplePlans){

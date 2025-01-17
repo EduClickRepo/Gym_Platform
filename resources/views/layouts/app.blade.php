@@ -155,11 +155,14 @@
                 <a class="banner-icon" href="#">
                     <img width="100%" alt="stats" src="{{asset('images/stats.png')}}">
                 </a>
-                -->
+
                 <a class="d-none d-md-inline-block" href="{{route('blogs')}}">
                     Blogs
                 </a>
-
+                -->
+                <a class="d-none d-md-inline-block" href="{{route('plans')}}">
+                    Planes
+                </a>
                 @auth
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS))
                         <a class="d-none d-md-inline-block" href="{{route('users.index')}}">
@@ -188,9 +191,14 @@
 
                         <div class="dropdown-menu dropdown-menu-right floating-card themed-block" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{route('home', ['user'=> Auth::user()->slug])}}">Home</a>
+                            <a class="dropdown-item d-block d-md-none" href="{{route('plans')}}">
+                                Planes
+                            </a>
+                            <!--
                             <a class="dropdown-item d-block d-md-none" href="{{route('blogs')}}">
                                 Blogs
                             </a>
+                            -->
                             @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS))
                                 <a class="dropdown-item d-block d-md-none" href="{{route('users.index')}}">
                                     Users

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Model\Plan;
+use App\Repositories\ClientPlanRepository;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 
 class PlanController extends Controller
@@ -16,16 +18,17 @@ class PlanController extends Controller
      */
     public function index()
     {
+        if(Auth::check()){
+            $clientPlanRepository = new ClientPlanRepository();
+            $lastPlan = $clientPlanRepository->findValidClientPlan(clientId: Auth::id(), frozenPlans: true);
+            if($lastPlan && $lastPlan->old) {
+                $plans = $this->enabledPlans(true);
+                return view('plans', ['plans' => $plans]);
+            }
+        }
         $plans = $this->enabledPlans(false);
         return view('plans', ['plans' => $plans]);
     }
-
-    public function oldPlans()
-    {
-        $plans = $this->enabledPlans(true);
-        return view('plans', ['plans' => $plans]);
-    }
-
 
     public function enabledPlans(bool $old)
     {
