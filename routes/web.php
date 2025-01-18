@@ -14,6 +14,7 @@
 use App\Category;
 use App\Http\Controllers\AccountingFlowController;
 use App\Http\Controllers\ActiveClientsController;
+use App\Http\Controllers\AgreementsController;
 use App\Http\Controllers\ClientPlanController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\HomeController;
@@ -106,6 +107,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/paymentSubscription',[PagosController::class, 'paymentSubscription'])->name('paymentSubscription');
 
     Route::post('/signTyC',[TyCController::class, 'signTyC'])->name('signTyC');
+
+    Route::get('/agreements', [AgreementsController::class, 'index'])->name('agreements');
+    Route::post('/generate-qr', [AgreementsController::class, 'generateQr'])->name('generate.qr');
 });
 
 Route::group(['middleware' => 'admin'], function () {

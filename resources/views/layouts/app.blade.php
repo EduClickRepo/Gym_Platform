@@ -163,6 +163,9 @@
                 <a class="d-none d-md-inline-block" href="{{route('plans')}}">
                     Planes
                 </a>
+                <a class="d-none d-md-inline-block" href="{{route('agreements')}}">
+                    Convenios
+                </a>
                 @auth
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS))
                         <a class="d-none d-md-inline-block" href="{{route('users.index')}}">
@@ -193,6 +196,9 @@
                             <a class="dropdown-item" href="{{route('home', ['user'=> Auth::user()->slug])}}">Home</a>
                             <a class="dropdown-item d-block d-md-none" href="{{route('plans')}}">
                                 Planes
+                            </a>
+                            <a class="dropdown-item d-block d-md-none" href="{{route('agreements')}}">
+                                Convenios
                             </a>
                             <!--
                             <a class="dropdown-item d-block d-md-none" href="{{route('blogs')}}">
