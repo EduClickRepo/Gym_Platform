@@ -31,10 +31,6 @@ class SendWhatsAppMessage implements SendMessageInterface
                                     [
                                         'type' => 'text',
                                         'text' => $info->expiration_date->translatedFormat('l j \d\e F \d\e Y')
-                                    ],
-                                    [
-                                        'type' => 'text',
-                                        'text' => '10%'
                                     ]
                                 ]
                             ]
