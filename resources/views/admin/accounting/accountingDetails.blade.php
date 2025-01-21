@@ -84,7 +84,7 @@
                                 </select>
                             </td>
                             <td>{{ $transaction->created_at }}</td>
-                            <td>{{ $transaction->user->fullName }}</td>
+                            <td>{{ $transaction->user?->fullName }}</td>
                             <td>{{ substr($transaction->data, 0, 32) }}</td>
                         </tr>
                     @endforeach
