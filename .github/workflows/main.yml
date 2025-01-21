@@ -29,7 +29,7 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.girlpower.com.co
+          server: 69.10.33.22
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /girlpower/GRLPWR/
@@ -37,7 +37,7 @@ jobs:
       - name: Sync public files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ftp.girlpower.com.co
+          server: 69.10.33.22
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /girlpower/public_html/
