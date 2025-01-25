@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row justify-content-center loginDiv">
         <div class="col-md-8">
-            <div class="floating-card form "  >
+            <div class="floating-card form">
                 <div class="card-body">
                     <form method="POST" novalidate action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         <!--el novalidate evita los mensaje de validación del navegador-->
@@ -55,13 +55,17 @@
 
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary w-100">
                                     {{ __('Login') }}
                                 </button>
-
-                                <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    {{ __('Forgot Your Password?') }}
-                                </a>
+                                <div class="d-flex w-100 justify-content-between">
+                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                        {{ __('Forgot Your Password?') }}
+                                    </a>
+                                    <a class="btn btn-link" href="{{ route('register') }}">
+                                        {{ __('Register') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </form>

@@ -9,6 +9,8 @@
             type="text/javascript"
             src="https://checkout.wompi.co/widget.js"
     ></script>
+
+    <link rel="stylesheet" href="{{asset('css/wompi.css')}}">
 @endpush
 
 @section('content')
