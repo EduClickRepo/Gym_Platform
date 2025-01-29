@@ -32,7 +32,7 @@ jobs:
           server: 69.10.33.22
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /girlpower/GRLPWR/
+          server-dir: /gym_platform/
 
       - name: Sync public files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -40,6 +40,6 @@ jobs:
           server: 69.10.33.22
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /girlpower/public_html/
+          server-dir: /public_html/
           local-dir: public/
           exclude: index.php
