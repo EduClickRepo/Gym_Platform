@@ -29,7 +29,7 @@ jobs:
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: 69.10.33.22
+          server: ftp.showstars.com.co
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /gym_platform/
@@ -37,7 +37,7 @@ jobs:
       - name: Sync public files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: 69.10.33.22
+          server: ftp.showstars.com.co
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
