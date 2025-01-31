@@ -21,6 +21,7 @@ enum FeaturesEnum: string
     case SEE_EXTENDED_SCHEDULE = 'SEE_EXTENDED_SCHEDULE';
     case CHANGE_TRANSACTION_CATEGORY = 'CHANGE_TRANSACTION_CATEGORY';
     case PENALIZE_NON_ATTENDANCE = 'PENALIZE_NON_ATTENDANCE';
+    case SEE_STATISTICS = 'SEE_STATISTICS';
 
     case schedule_until = 'schedule_until';
 }
