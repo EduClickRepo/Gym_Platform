@@ -40,7 +40,7 @@ use App\Http\Controllers\AchievementController;
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/mis_solicitudes/crear', 'SolicitudServicioController@irCrear')->name('irCrearSolicitud');
-    Route::post('/mis_solicitudes/crear', 'S    olicitudServicioController@save')->name('crearSolicitud');
+    Route::post('/mis_solicitudes/crear', 'SolicitudServicioController@save')->name('crearSolicitud');
     Route::get('/{user}/mis_solicitudes/{solicitud}/editar', 'SolicitudServicioController@irEditar')->name('irEditarSolicitud');
     Route::put('/mis_solicitudes/{solicitud}/editar', 'SolicitudServicioController@editar')->name('editarSolicitud');
     Route::post('/mis_solicitudes/tutorialCreacion', 'SolicitudServicioController@tutorialCreacionCompletado');
