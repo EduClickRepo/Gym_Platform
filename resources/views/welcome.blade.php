@@ -5,8 +5,8 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        <title>@lang('general.AppName')</title>
-        <meta name="description" content="Recibe Ofertas de Entrenadores Personales, Compara y Elige al Entrenador Correcto por el Precio que Quieres"/>
+        <title>@lang('general.AppName') - Academia de Baile</title>
+        <meta name="description" content="Únete a nuestra academia de baile y descubre el ritmo en cada paso."/>
         <link rel="canonical" href="{{env('APP_URL')}}/"/>
 
         <!-- Fonts -->
@@ -69,7 +69,7 @@
 
     <nav id="top-navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
         <a class="navbar-brand" href="#" style="width: 60px; padding: 0">
-            <img src="{{asset('images/brand/Imago_fondo_claro.png')}}" width="70%" height="70%">
+            <img src="{{asset('images/brand/logoshowstars.png')}}" width="70%" height="70%">
         </a>
         <div class="top-right links">
             <a href="{{ route('blogs') }}">Blogs</a>
@@ -102,7 +102,7 @@
                 <video autoplay muted class="portrait-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="auto"></video>
                 <video muted class="landscape-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="none"></video>
                 <button id="schedule-courtesy" style="background: linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%);" class="btn ml-auto mr-auto" data-toggle="modal"
-                        data-target="#scheduleCourtesyModal">¡Agendar Cortesía!
+                        data-target="#scheduleCourtesyModal">¡Baila con nosotros!
                 </button>
                 <button id="sound" class="btn position-absolute bg-dark color-white" style="bottom:5vh; left: 5vh; height: 40px; line-height: 0">
                     <span id="volume_off" class="material-icons" style="font-size: smaller">volume_off</span>
@@ -114,43 +114,40 @@
     </div>
 
     <div class="w-100 text-center p-5 bg-brand-primary-gradient color-white">
-        <h3>CENTRO DE BIENESTAR EXCLUSIVO PARA MUJERES</h3>
+        <h3>BIENVENIDOS A NUESTRA ACADEMIA DE BAILE</h3>
     </div>
 
-    <x-type-section title="Fit Flyr" description="Entrenamiento de rebote que reduce 80% el impacto y quema 20% más calorías" img="{{asset('images/exercise/kangoo.JPG')}}" background="white" color="black"></x-type-section>
+    <div class="section text-center p-5">
+        <h1>¿Por qué elegir nuestra academia?</h1>
+        <p>Ofrecemos clases para todos los niveles con instructores profesionales en un ambiente amigable y motivador.</p>
+    </div>
 
-    <x-type-section title="Fit Combat" description="Mezcla de artes marciales al ritmo de la música 🤼" img="{{asset('images/exercise/combat.JPG')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
+    <x-type-section title="Danza Contemporánea" description="Explora la libertad de movimiento y la expresión corporal en una fusión de estilos." img="{{asset('images/brand/danzacontemporeanea.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
-    <x-type-section title="Fit Mind" description="Conexión mente cuerpo, trabajamos respiración y meditación 🧘" img="{{asset('images/exercise/mind.JPG')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
-    <x-type-section title="Fit Step" description="Tonifica, has cardio, sube y baja al mejor ritmo de la música" img="{{asset('images/exercise/step.JPG')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
+    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.png')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Fit Flex" description="Combinación de yoga con pilates 🤸♀" img="{{asset('images/exercise/flex.JPG')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/dancehall.png')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Fit Dance" description="Rumboterapia al ritmo de 4 generos músicales 💃" img="{{asset('images/exercise/dance.JPG')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
-
-    <x-type-section title="Fit Pound" description="Tonificación total body al ritmo de la música con baquetas 🥁" img="{{asset('images/exercise/pound.JPG')}}" background="white" color="black"></x-type-section>
-
-    <x-type-section title="Fit Box" description="El boxeo es un arte marcial y deporte que combina fuerza, velocidad y estrategia, donde los puños son las herramientas de expresión, para desestresarte y sacar el fuego que llevas por dentro. 🥊 💥‍" img="{{asset('images/exercise/box.JPG')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
-
-    <x-type-section title="Fit Functional" description="Mezcla de crossfit que mejora la vida diaria al fortalecer movimientos naturales y el núcleo, promoviendo la salud y la funcionalidad. 💪🏋️‍" img="{{asset('images/exercise/functional.JPG')}}" background="white" color="black"></x-type-section>
-
+    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.png')}}" background="white" color="black"></x-type-section>
 
     <div class="section d-flex flex-column">
         <div class="mx-auto mb-4">
-            <h1 class="w-75  text-center mx-auto mb-5">¿Porqué <br> Girl Power?</h1>
+            <h1 class="w-75 text-center mx-auto mb-5">Vive la experiencia de la danza</h1>
             <p class="w-50 m-auto text-justify">
-            En GRL PWR ofrecemos un refugio para que puedas encontrar y desarrollar todo tu POWER. Unimos cuerpo, mente y espíritu, para que te sientas cómoda entrenando en la gran variedad de ejercicios que ofrecemos.
+                En nuestra academia de baile, creamos un espacio donde la pasión por la danza cobra vida. Fusionamos técnica, expresión y disfrute, brindando un ambiente donde cada persona puede descubrir su propio ritmo y desarrollar su talento con confianza.
             </p>
         </div>
+    </div>
         <div class="flex-grow-1 w-100">
-            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/Imago_fondo_claro.png')}}'); background-size: cover; background-position: center"></div>
+            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/logoshowstars.png')}}'); background-size: cover; background-position: center"></div>
         </div>
     </div>
 
     <div class="section text-center d-block">
         <h1 class="text-center">
-            Síguenos en nuestras redes sociales
+            Síguenos en redes
         </h1>
         <div
             loading="lazy"
@@ -207,7 +204,7 @@
 
         <div class="footer-left">
 
-            <img class="mb-3" src="{{asset('images/brand/imago_sin_fondo_oscuro.png')}}" width="70%" height="70%">
+            <img class="mb-3" src="{{asset('images/brand/logoshowstars.png')}}" width="70%" height="70%">
 
             <!--<p class="footer-links">
                 <a href="#quienesSomos">Quienes somos</a>
