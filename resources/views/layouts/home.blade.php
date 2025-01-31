@@ -53,7 +53,6 @@
             <div class="perfil-container m-3">
                 <img src="{{asset('images/avatars/'.$user->foto)}}" class="user-profile-icon">
                 @if(!$visitante)
-
                     @if((strcasecmp ($user->rol, 'entrenador' ) == 0 && $user->entrenador == null) || (strcasecmp ($user->rol, 'cliente' ) == 0 && $user->cliente == null))
                         <div class="progress bg-dark ml-auto mr-auto" style="width: 80%;">
                             <div class="progress-bar bg-white" role="progressbar" style="width: 25%; color: black"
@@ -63,12 +62,7 @@
                         <button class="btn themed-btn d-block ml-auto mr-auto" data-toggle="modal"
                                 data-target="#completarPerfilModal">Completar perfil
                         </button>
-                    @else
-                        <a href="{{route('profile', ['user'=> Auth::user()->slug])}}" class="d-block ml-auto mr-auto">
-                            <button type="button" class="btn themed-btn mt-2">Ver mi perfil</button>
-                        </a>
                     @endif
-
                 @endif
                 @if(strcasecmp ($user->rol, 'entrenador' ) == 0)
                     <img style="width: 100px; height: 25px; margin-bottom: 0" alt="rating"

@@ -160,12 +160,6 @@
                     Blogs
                 </a>
                 -->
-                <a class="d-none d-md-inline-block" href="{{route('plans')}}">
-                    Planes
-                </a>
-                <a class="d-none d-md-inline-block" href="{{route('agreements')}}">
-                    Convenios
-                </a>
                 @auth
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS))
                         <a class="d-none d-md-inline-block" href="{{route('users.index')}}">
@@ -194,11 +188,8 @@
 
                         <div class="dropdown-menu dropdown-menu-right floating-card themed-block" aria-labelledby="navbarDropdown">
                             <a class="dropdown-item" href="{{route('home', ['user'=> Auth::user()->slug])}}">Home</a>
-                            <a class="dropdown-item d-block d-md-none" href="{{route('plans')}}">
+                            <a class="dropdown-item" href="{{route('plans')}}">
                                 Planes
-                            </a>
-                            <a class="dropdown-item d-block d-md-none" href="{{route('agreements')}}">
-                                Convenios
                             </a>
                             <!--
                             <a class="dropdown-item d-block d-md-none" href="{{route('blogs')}}">
@@ -213,6 +204,21 @@
                             @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SAVE_PETTY_CASH))
                                 <a class="dropdown-item d-block d-md-none" href="{{route('pettyCash.index')}}">
                                     Caja Menor
+                                </a>
+                            @endif
+                            @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_PETTY_CASH) || Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_MAYOR_CASH))
+                                <a class="dropdown-item d-block d-md-none" href="{{route('AccountingFlow')}}">
+                                    Flujo contable
+                                </a>
+                            @endif
+                            @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_MAYOR_CASH))
+                                <a class="dropdown-item" href="{{route('AccountingClose')}}">
+                                    Cierre Contable
+                                </a>
+                            @endif
+                            @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::LOAD_CLIENT_PLAN))
+                                <a class="dropdown-item" href="{{route('loadPlan')}}">
+                                    Cargar Planes
                                 </a>
                             @endif
                             @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_ACHIEVEMENTS_WEEKS_RANK))

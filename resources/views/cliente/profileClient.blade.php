@@ -72,9 +72,6 @@
                 </div>
             @endif
 
-            @include('achievements.achievementsResume')
-
-
             @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS_GENERAL_INFO) || Auth::user()->id == $user->id)
                 @include('cliente.clientPlan')
                 @include('components.lastClasses')
