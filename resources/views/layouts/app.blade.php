@@ -163,9 +163,6 @@
                 <a class="d-none d-md-inline-block" href="{{route('plans')}}">
                     Planes
                 </a>
-                <a class="d-none d-md-inline-block" href="{{route('agreements')}}">
-                    Convenios
-                </a>
                 @auth
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_USERS))
                         <a class="d-none d-md-inline-block" href="{{route('users.index')}}">
@@ -175,11 +172,6 @@
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SAVE_PETTY_CASH))
                         <a class="d-none d-md-inline-block" href="{{route('pettyCash.index')}}">
                             Caja Menor
-                        </a>
-                    @endif
-                    @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_ACHIEVEMENTS_WEEKS_RANK))
-                        <a class="d-none d-md-inline-block" href="{{route('achievementsWeeksRank')}}">
-                            Ranking
                         </a>
                     @endif
                     @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_PETTY_CASH) || Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_MAYOR_CASH))
