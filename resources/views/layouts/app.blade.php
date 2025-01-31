@@ -216,6 +216,11 @@
                                     Cierre Contable
                                 </a>
                             @endif
+                            @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::SEE_STATISTICS))
+                                <a class="dropdown-item" href="{{route('AccountingClose')}}">
+                                    Estadísticas
+                                </a>
+                            @endif
                             @if(Auth::user()->hasFeature(\App\Utils\FeaturesEnum::LOAD_CLIENT_PLAN))
                                 <a class="dropdown-item" href="{{route('loadPlan')}}">
                                     Cargar Planes
