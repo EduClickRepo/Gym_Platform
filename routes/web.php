@@ -30,6 +30,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WellBeingController;
 use App\Http\Controllers\AccountingCloseController;
 use App\Http\Controllers\WellBeignStatusController;
+use App\Http\Controllers\UserClassesController;
 use App\Model\Cliente;
 use App\Model\ClientPlan;
 use App\PaymentMethod;
@@ -114,7 +115,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
-
+    Route::get('/userClasses', [UserClassesController::class, 'userClasses'])->name('user.classes');
     Route::get('/admin/saveActiveClients/{date}', [ActiveClientsController::class, 'saveActiveClientByDate']);
 });
 

@@ -53,5 +53,4 @@ class SesionCliente extends Model
     public function event(){
         return $this->belongsTo(Evento::class,'evento_id', 'id')->withTrashed();
     }
-
 }
