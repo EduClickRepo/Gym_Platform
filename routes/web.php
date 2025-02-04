@@ -145,7 +145,7 @@ Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '
     Route::get('/transactions/search', [AccountingCloseController::class, 'search'])->name('transactions.search');
 });
 Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '-' .\App\Utils\FeaturesEnum::CHANGE_TRANSACTION_CATEGORY->value])->group(function () {
-    Route::post('/transactions/category', [AccountingCloseController::class, 'updateCategory'])->name('transactions.category.update');
+        Route::post('/transactions/category', [AccountingCloseController::class, 'updateCategory'])->name('transactions.category.update');
 });
 
 Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '-' . \App\Utils\FeaturesEnum::SEE_MAYOR_CASH->value . ',' . \App\Utils\FeaturesEnum::class . '-' . \App\Utils\FeaturesEnum::SEE_PETTY_CASH->value])->group(function () {
