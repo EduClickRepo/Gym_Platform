@@ -30,6 +30,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WellBeingController;
 use App\Http\Controllers\AccountingCloseController;
 use App\Http\Controllers\WellBeignStatusController;
+use App\Http\Controllers\NumberClassesController;
 use App\Model\Cliente;
 use App\Model\ClientPlan;
 use App\PaymentMethod;
@@ -114,7 +115,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/statistics', [StatisticsController::class, 'index'])->name('statistics');
-
     Route::get('/admin/saveActiveClients/{date}', [ActiveClientsController::class, 'saveActiveClientByDate']);
 });
 
@@ -176,6 +176,7 @@ Route::middleware(['auth', 'check.feature:' . \App\Utils\FeaturesEnum::class . '
 /*Open routes*/
     Auth::routes();
 
+    Route::get('/timeClasses', [NumberClassesController::class, 'tClasses'])->name('time.classes');
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
     Route::get('/planes', [PlanController::class, 'index'])->name('plans');
