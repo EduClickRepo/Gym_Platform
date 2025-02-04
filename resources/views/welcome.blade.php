@@ -69,7 +69,7 @@
 
     <nav id="top-navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
         <a class="navbar-brand" href="#" style="width: 60px; padding: 0">
-            <img src="{{asset('images/brand/logoshowstars.png')}}" width="70%" height="70%">
+            <img src="{{asset('images/brand/Logo showstars_page-0001.jpg')}}" width="70%" height="70%">
         </a>
         <div class="top-right links">
             <a href="{{ route('blogs') }}">Blogs</a>
@@ -126,11 +126,11 @@
 
     <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
-    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.jpg')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/dancehall.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/twerkydancehall.jpg')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.jpg')}}" background="white" color="black"></x-type-section>
 
     <div class="section d-flex flex-column">
         <div class="mx-auto mb-4">
@@ -141,7 +141,7 @@
         </div>
     </div>
         <div class="flex-grow-1 w-100">
-            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/logoshowstars.png')}}'); background-size: cover; background-position: center"></div>
+            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/tarjetas9x5.5_tiro_page-0001.jpg')}}'); background-size: cover; background-position: center"></div>
         </div>
     </div>
 
