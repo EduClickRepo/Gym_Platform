@@ -118,19 +118,23 @@
     </div>
 
     <div class="section text-center p-5">
+        <img src="{{ asset('images/brand/volante_mediacarta_page-0001.jpg') }}" alt="Descripción de la imagen">
+    </div>
+
+    <div class="section text-center p-5">
         <h1>¿Por qué elegir nuestra academia?</h1>
         <p>Ofrecemos clases para todos los niveles con instructores profesionales en un ambiente amigable y motivador.</p>
     </div>
 
     <x-type-section title="Danza Contemporánea" description="Explora la libertad de movimiento y la expresión corporal en una fusión de estilos." img="{{asset('images/brand/danzacontemporeanea.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
-    <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
+    <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.jpg')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.jpg')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
     <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/twerkydancehall.jpg')}}" background="white" color="black"></x-type-section>
 
-    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.jpg')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.jpg')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
 
     <div class="section d-flex flex-column">
         <div class="mx-auto mb-4">
