@@ -101,7 +101,7 @@
             <div class="title">
                 <video autoplay muted class="portrait-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="auto"></video>
                 <video muted class="landscape-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="none"></video>
-                <button id="schedule-courtesy" style="background: linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%);" class="btn ml-auto mr-auto" data-toggle="modal"
+                <button id="schedule-courtesy" style="background: #BC9A2F" class="btn ml-auto mr-auto" data-toggle="modal"
                         data-target="#scheduleCourtesyModal">¡Baila con nosotros!
                 </button>
                 <button id="sound" class="btn position-absolute bg-dark color-white" style="bottom:5vh; left: 5vh; height: 40px; line-height: 0">
