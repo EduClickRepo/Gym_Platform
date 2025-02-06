@@ -74,7 +74,7 @@ h2.title {
 }
 
 .text-primary {
-    color: #420542;
+    color: #BC9A2F;
 }
 
 .text-danger {
@@ -125,15 +125,15 @@ h2.title {
     font-weight: 500;
 }
 .wizard-card[data-color="purple"] .moving-tab {
-    background-color: #420542;
-    box-shadow: 0 16px 26px -10px rgba(156, 39, 176, 0.56), 0 4px 25px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(156, 39, 176, 0.2);
+    background-color: #BC9A2F;
+    box-shadow: 0 4px 8px 0 rgba(188, 154, 47, 0.15), 0 6px 20px 0 rgba(188, 154, 47, 0.1);
 }
 .wizard-card[data-color="purple"] .picture:hover {
-    border-color: #420542;
+    border-color: #BC9A2F;
 }
 .wizard-card[data-color="purple"] .choice:hover .icon, .wizard-card[data-color="purple"] .choice.active .icon {
-    border-color: #420542;
-    color: #420542;
+    border-color: #BC9A2F;
+    color: #BC9A2F;
 }
 .wizard-card[data-color="purple"] .form-group .form-control {
     background-image: linear-gradient(#420542, #420542), linear-gradient(#D2D2D2, #D2D2D2);

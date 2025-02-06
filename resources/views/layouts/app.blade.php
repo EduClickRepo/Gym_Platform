@@ -137,7 +137,7 @@
     <div id="app">
         <div id="top-navbar" class="navbar themed-navbar fixed-top">
             <a class="navbar-brand position-absolute" style="width: 60px" href="@auth{{route('home', ['user'=> Auth::user()->slug])}}@else # @endauth">
-                <img width="120%" alt="logo" src="{{asset('images/brand/Imago_fondo_claro.png')}}">
+                <img width="120%" alt="logo" src="{{asset('images/brand/Logo showstars_page-0001.jpg')}}">
             </a>
             <!--
             <form id="buscarEntrenadores-form" action="{{ route('buscarEntrenadores') }}" method="GET">
