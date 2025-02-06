@@ -69,7 +69,7 @@
 
     <nav id="top-navbar" class="navbar navbar-expand-md navbar-dark fixed-top">
         <a class="navbar-brand" href="#" style="width: 60px; padding: 0">
-            <img src="{{asset('images/brand/logoshowstars.png')}}" width="70%" height="70%">
+            <img src="{{asset('images/brand/Logo showstars_page-0001.jpg')}}" width="70%" height="70%">
         </a>
         <div class="top-right links">
             <a href="{{ route('blogs') }}">Blogs</a>
@@ -101,7 +101,7 @@
             <div class="title">
                 <video autoplay muted class="portrait-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="auto"></video>
                 <video muted class="landscape-video landingVideo" src="{{asset('video/landing_page_portrait.mp4')}}" preload="none"></video>
-                <button id="schedule-courtesy" style="background: linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%);" class="btn ml-auto mr-auto" data-toggle="modal"
+                <button id="schedule-courtesy" style="background: #BC9A2F" class="btn ml-auto mr-auto" data-toggle="modal"
                         data-target="#scheduleCourtesyModal">¡Baila con nosotros!
                 </button>
                 <button id="sound" class="btn position-absolute bg-dark color-white" style="bottom:5vh; left: 5vh; height: 40px; line-height: 0">
@@ -117,20 +117,24 @@
         <h3>BIENVENIDOS A NUESTRA ACADEMIA DE BAILE</h3>
     </div>
 
-    <div class="section text-center p-5">
+    <div class="section text-center p-5" style="background-color: black; color: white;">
+        <img src="{{ asset('images/brand/volante_mediacarta_page-0001.jpg') }}" alt="Descripción de la imagen">
+    </div>
+
+    <div class="section text-center p-5" style="background-color: black; color: white;">
         <h1>¿Por qué elegir nuestra academia?</h1>
         <p>Ofrecemos clases para todos los niveles con instructores profesionales en un ambiente amigable y motivador.</p>
     </div>
 
-    <x-type-section title="Danza Contemporánea" description="Explora la libertad de movimiento y la expresión corporal en una fusión de estilos." img="{{asset('images/brand/danzacontemporeanea.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
+    <x-type-section title="Danza Contemporánea" description="Explora la libertad de movimiento y la expresión corporal en una fusión de estilos." img="{{asset('images/brand/danzacontemporeanea.png')}}" background=#BC9A2F color="white"></x-type-section>
 
-    <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%)" color="white"></x-type-section>
+    <x-type-section title="Hip Hop" description="Ritmo urbano, energía y actitud en coreografías llenas de estilo y creatividad." img="{{asset('images/brand/hiphop.png')}}" background="#000000" color="white"></x-type-section>
 
-    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Salsa y Bachata" description="Aprende los movimientos y la pasión de los ritmos latinos más populares." img="{{asset('images/brand/salsaybachata.jpg')}}" background=#BC9A2F color="white"></x-type-section>
 
-    <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/dancehall.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Twerk y Dancehall" description="Explora la potencia del movimiento con estos estilos urbanos llenos de energía." img="{{asset('images/brand/twerkydancehall.jpg')}}" background="#000000" color="white"></x-type-section>
 
-    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.png')}}" background="white" color="black"></x-type-section>
+    <x-type-section title="Danza Urbana" description="Un mix de estilos urbanos para coreografías enérgicas y modernas." img="{{asset('images/brand/danzaurbana.jpg')}}" background=#BC9A2F color="white"></x-type-section>
 
     <div class="section d-flex flex-column">
         <div class="mx-auto mb-4">
@@ -141,7 +145,7 @@
         </div>
     </div>
         <div class="flex-grow-1 w-100">
-            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/logoshowstars.png')}}'); background-size: cover; background-position: center"></div>
+            <div class="m-auto floating-card" style="height: 400px; width: 400px; background-image: url('{{asset('images/brand/tarjetas9x5.5_tiro_page-0001.jpg')}}'); background-size: cover; background-position: center"></div>
         </div>
     </div>
 

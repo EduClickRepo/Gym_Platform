@@ -49,7 +49,7 @@
 
     <nav id="top-navbar" class="navbar navbar-expand-md navbar- fixed-top">
         <a class="navbar-brand" href="#" style="width: 60px; padding: 0">
-            <img src="{{asset('images/brand/Imago_fondo_claro.png')}}" width="70%" height="70%">
+            <img src="{{asset('images/brand/Logo showstars_page-0001.jpg')}}" width="70%" height="70%">
         </a>
         <div class="top-right links">
             <a href="{{ route('blogs') }}">Blogs</a>

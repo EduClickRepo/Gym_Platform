@@ -124,7 +124,7 @@ body{
     font-weight: 200!important;
 }
 footer{
-    background: rgb(67,5,68);
+    background: #000000;
 }
 
 .landingVideo{
@@ -254,11 +254,11 @@ h1{
     color: white;
 }
 .bg-semi-transparent{
-    background-color: rgb(67,5,68, 0.9);
+    background-color: black;
     color: white;
 }
 .bg-brand-primary-gradient{
-    background: linear-gradient(90deg, rgba(67,0,36,1) 0%, rgba(67,5,68,1) 72%, rgba(87,6,88,1) 100%);
+    background: #BC9A2F;
 }
 .fade-in-section {
     opacity: 0;
