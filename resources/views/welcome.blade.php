@@ -239,13 +239,13 @@
             <div>
                 <a href="https://api.whatsapp.com/send/?phone=573123781174<&text=Hola,%20quiero%20conocer%20Girl%20Power&app_absent=0" target="_blank">
                     <i class="fa fa-phone m-0"></i>
-                    <p>312 378 11 74</p>
+                    <p>311 834 41 20</p>
                 </a>
             </div>
 
             <div>
                 <i class="fa fa-envelope m-0"></i>
-                <p><a href="mailto:contacto@girlpower.com.co">contacto@girlpower.com.co</a></p>
+                <p><a href="mailto:contacto@girlpower.com.co">miguelsalsa123.wixsite.com/showstars</a></p>
             </div>
 
         </div>
@@ -254,7 +254,7 @@
             <!--<a href="#"><i class="fab fa-facebook"></i></a>-->
             <a href="https://www.instagram.com/girlpowerstudio/">
                 <i class="fab fa-instagram m-0" style="font-size: 25px"></i>
-                <p>@girlpowerstudio</p>
+                <p>@showstarscol</p>
             </a>
         </div>
 
