@@ -5,6 +5,8 @@ namespace App\Http\Services;
 
 use App\Utils\PayTypesEnum;
 use Illuminate\Http\Client\Response;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class ProcessPaymentWompi implements ProcessPaymentInterface
@@ -49,6 +51,15 @@ class ProcessPaymentWompi implements ProcessPaymentInterface
             'reference' => $signature['reference'],
             'payment_source_id' => $payment_source_id
         ]);
+    }
+
+    public function ajaxSignature(Request $request): JsonResponse
+    {
+        $signature = $this->paymentIntegritySignature($request->userId, $request->amount, $request->currency, $request->planId);
+        return response()->json([
+            'reference' => $signature['reference'],
+            'signature' => $signature['signature'],
+        ], 200);
     }
 
     private function paymentIntegritySignature($userId, float $amount, string $currency, string $planId, string $expirationTime = null){

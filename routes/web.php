@@ -30,6 +30,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\WellBeingController;
 use App\Http\Controllers\AccountingCloseController;
 use App\Http\Controllers\WellBeignStatusController;
+use App\Http\Services\ProcessPaymentWompi;
 use App\Model\Cliente;
 use App\Model\ClientPlan;
 use App\PaymentMethod;
@@ -86,6 +87,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/agendar', [SesionClienteController::class, 'save'])->name('agendar');
 
     Route::get('/response_payment', [PagosController::class, 'responsePayment']);
+    Route::get('/wompiSignature', [ProcessPaymentWompi::class, 'ajaxSignature'])->name('wompiSignature');
 
     Route::post('/scheduleEvent', [SesionClienteController::class, 'scheduleEvent'])->name('scheduleEvent');
     Route::post('/dar_review_entrenamiento/', [SesionClienteController::class, 'darReview'])->name('darReviewEntrenamiento');

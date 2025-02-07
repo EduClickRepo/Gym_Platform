@@ -56,6 +56,30 @@
             });
         }
 
+        async function callSignature(plan){
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    url: "{{ route('wompiSignature') }}",
+                    method: "GET",
+                    data: {
+                        userId: {{\Illuminate\Support\Facades\Auth::id()}},
+                        amount: plan.price*100,
+                        currency: '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}',
+                        planId: plan.id
+                    },
+                    success: function (data) {
+                        resolve(data);
+                    },
+                    error: function (error) {
+                        reject(error);
+                    }
+                });
+            });
+        }
+
         async function showPayModal(plan, selectElement) {
             const paymentOption = selectElement?.value ?? '';
             const currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}';
@@ -67,10 +91,12 @@
                 checkoutOptions.widgetOperation = 'tokenize';
                 var amountInCents = plan.automatic_debt_price ?? 0;
             } else {
-                checkoutOptions.amountInCents = plan.price*100;//multiplicado por 100 por los centavos
+                const response = await callSignature(plan);
                 checkoutOptions.currency = currency;
-                const timestamp = Date.now()
-                checkoutOptions.reference = `GP-{{ \Illuminate\Support\Facades\Auth::id()}}-{{ \App\Utils\PayTypesEnum::Plan->value}}-${plan.id}-${timestamp}`;
+                checkoutOptions.amountInCents = plan.price*100;//multiplicado por 100 por los centavos
+                checkoutOptions.reference = response.reference;
+                checkoutOptions.publicKey = '{{env('WOMPI_PUBLIC_KEY')}}';
+                checkoutOptions.signature = { integrity: response.signature };
             }
 
             const checkout = new WidgetCheckout(checkoutOptions);
@@ -87,7 +113,6 @@
                         console.error("Error creating subscription:", error);
                     }
                 }
-                // TODO process unique payment
             });
         }
     </script>
