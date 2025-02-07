@@ -207,19 +207,35 @@ class PagosController extends Controller
         return redirect()->back();
     }
 
-    public function paymentSubscription(Request $request){
+    public function paymentSubscription(Request $request)
+    {
         list($acceptanceToken, $personalDataAuth) = $this->getAcceptanceTokens();
         $paymentSourceId = $this->createPaymentSource($request->token, $acceptanceToken, $personalDataAuth);
-        $userId = auth()->user()->id;
-        Subscriptions::create([
-            'user_id' => $userId,
+        $user = auth()->user(); // Se define correctamente el usuario
+
+        $subscription = Subscriptions::create([
+            'user_id' => $user->id,
             'payment_source_id' => $paymentSourceId,
             'plan_id' => $request->planId,
             'amount' => $request->amount,
             'currency' => $request->currency,
         ]);
-        //TODO show message subscripción creada
-        $this->makePayment($userId, $paymentSourceId, $request->amount, $request->currency, $request->planId);
+
+        $pdf = PDF::loadView('pdf.subscription', [
+            'user' => $user,
+            'plan' => Plan::find($request->planId),
+            'subscription' => $subscription,
+        ]);
+
+        // Enviar el correo con el PDF adjunto
+        Mail::send('views.subscriptionConfirmation', ['user' => $user], function ($message) use ($user, $pdf) {
+            $message->to($user->email)
+                ->subject('Confirmación de Débito Automático')
+                ->attachData($pdf->output(), 'confirmacion_suscripcion.pdf');
+        });
+
+        // TODO: Mostrar mensaje de "suscripción creada"
+        $this->makePayment($user->id, $paymentSourceId, $request->amount, $request->currency, $request->planId);
     }
 
     private function getAcceptanceTokens()
