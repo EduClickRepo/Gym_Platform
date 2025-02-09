@@ -9,8 +9,6 @@
             type="text/javascript"
             src="https://checkout.wompi.co/widget.js"
     ></script>
-
-    <link rel="stylesheet" href="{{asset('css/wompi.css')}}">
 @endpush
 
 @section('content')
@@ -25,8 +23,6 @@
 
 @push('scripts')
     <!--PAYMENT-->
-    <script type="text/javascript" src="https://checkout.epayco.co/checkout.js"></script>
-
     <script>
         function createSubscription(token, amountInCents, currency, planId) {
             return new Promise((resolve, reject) => {
@@ -65,7 +61,7 @@
                     url: "{{ route('wompiSignature') }}",
                     method: "GET",
                     data: {
-                        userId: {{\Illuminate\Support\Facades\Auth::id()}},
+                        userId: {{\Illuminate\Support\Facades\Auth::id() ?? '0'}},
                         amount: plan.price*100,
                         currency: '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}',
                         planId: plan.id
@@ -80,6 +76,29 @@
             });
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            // Delegar el evento de submit a los formularios dentro de un contenedor común
+            document.body.addEventListener("submit", function (event) {
+                const form = event.target; // Obtener el formulario que disparó el evento
+
+                // Verificar si el formulario es uno de los formularios de pago
+                if (form.matches("[id^=paymentForm]")) {
+                    event.preventDefault(); // Prevenir el envío por defecto
+
+                    @auth()
+                        const planId = form.getAttribute("id").replace("paymentForm", ""); // Extraer ID del plan
+                        const planData = @json($plans); // Asumiendo que $plans es el array de planes
+                        const plan = planData.find(p => p.id == planId);
+
+                        showPayModal(plan, form.querySelector(".payment-options"));
+                    @else
+                        window.location.href = "{{ route('login') }}";
+                        return false;
+                    @endauth
+                }
+            });
+        });
+
         async function showPayModal(plan, selectElement) {
             const paymentOption = selectElement?.value ?? '';
             const currency = '{{\Illuminate\Support\Facades\Session::get('currency_id') ?? 'COP'}}';
@@ -92,6 +111,7 @@
                 var amountInCents = plan.automatic_debt_price ?? 0;
             } else {
                 const response = await callSignature(plan);
+                checkoutOptions.widgetOperation = 'purchase';
                 checkoutOptions.currency = currency;
                 checkoutOptions.amountInCents = plan.price*100;//multiplicado por 100 por los centavos
                 checkoutOptions.reference = response.reference;
