@@ -9,6 +9,20 @@
             type="text/javascript"
             src="https://checkout.wompi.co/widget.js"
     ></script>
+    <style>
+        .price-transition {
+            transition: all 2s ease;
+        }
+
+        .hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .visible {
+            opacity: 1;
+        }
+    </style>
 @endpush
 
 @section('content')
@@ -21,9 +35,95 @@
     </div>
 @endsection
 
+@push('modals')
+    <!-- Modal Contract-->
+    <div class="modal m-auto" tabindex="-1" role="dialog" id="modalTerminos" style="height: 100vh; width: 75vw; z-index: 1051">
+        <div role="document" class="m-auto h-100 w-100">
+            <div class="modal-content h-100">
+                <div class="modal-header h-100">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <object id="pdfViewer" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
+                        <embed id="pdfEmbed" type='application/pdf' width="100%" height="100%" />
+                    </object>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
+
 @push('scripts')
-    <!--PAYMENT-->
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.card');
+
+            const pdfViewer = document.getElementById('pdfViewer');
+            const pdfEmbed = document.getElementById('pdfEmbed');
+
+            cards.forEach(card => {
+                const select = card.querySelector('.payment-options');
+                const originalPrice = card.querySelector('.price-original');
+                const discountedPrice = card.querySelector('.price-discounted');
+
+                const modalTrigger = card.querySelector('.view-contract'); // Botón de ver contrato
+                const contractSingle = card.getAttribute('data-contract-single');
+                const contractAutomatic = card.getAttribute('data-contract-automatic');
+
+                function updateContract(pdfUrl) {
+                    pdfViewer.setAttribute('data', pdfUrl);
+                    pdfEmbed.setAttribute('src', pdfUrl);
+                }
+
+                if (modalTrigger) {
+                    modalTrigger.addEventListener('click', function () {
+                        updateContract(select.value === 'automatic' ? contractAutomatic : contractSingle);
+                    });
+                }
+
+                if (!select || !originalPrice || !discountedPrice){
+                    return;
+                }
+
+                // Manejar el cambio de selección
+                select.addEventListener('change', function () {
+                    if (select.value === 'automatic') {
+                        // Mostrar precio reducido con transición
+                        originalPrice.style.textDecoration = 'line-through';
+                        originalPrice.style.fontSize = '16px';
+                        originalPrice.classList.add('price-transition');
+
+                        discountedPrice.classList.remove('hidden');
+                        discountedPrice.classList.add('visible');
+                        discountedPrice.style.fontSize = '24px';
+                    } else if (select.value === 'single') {
+                        // Mostrar solo el precio original con transición
+                        originalPrice.style.textDecoration = 'none';
+                        originalPrice.style.fontSize = '24px';
+                        originalPrice.classList.add('price-transition');
+
+                        discountedPrice.classList.add('hidden');
+                        discountedPrice.classList.remove('visible');
+                    }
+                });
+
+                // Configuración inicial
+                if (select.value === 'automatic') {
+                    originalPrice.style.textDecoration = 'line-through';
+                    originalPrice.style.fontSize = '16px';
+                    originalPrice.classList.add('price-transition');
+
+                    discountedPrice.classList.remove('hidden');
+                    discountedPrice.classList.add('visible');
+                    discountedPrice.style.fontSize = '24px';
+                }
+            });
+        });
+    <!--PAYMENT-->
+
         function createSubscription(token, amountInCents, currency, planId) {
             return new Promise((resolve, reject) => {
                 $('#loading-spinner').show();

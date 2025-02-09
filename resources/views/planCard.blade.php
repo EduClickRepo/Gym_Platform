@@ -1,4 +1,6 @@
-<div style="width: 270px;" class="card themed-block text-center py-4 px-1 mb-5 mx-auto d-flex flex-column align-items-center @if($plan->highlighted) highlighted-plan @endif" style="height: 75vh">
+<div style="width: 270px;" class="card themed-block text-center py-4 px-1 mb-5 mx-auto d-flex flex-column align-items-center @if($plan->highlighted) highlighted-plan @endif" style="height: 75vh"
+     data-contract-single="{{ asset('pdf/contracts/' . $plan->contract) }}"
+     data-contract-automatic="{{ asset('pdf/contracts/' . $plan->contract_automatic_debt) }}">
     <div class="mx-auto mb-auto">
         <h2>Membresía</h2>
         <h2>{{$plan->name}}</h2>
@@ -30,68 +32,6 @@
                     <h2><strong>${{ number_format($plan->price, 0, '.', ',') }}</strong></h2>
                 @endif
             </div>
-
-            <style>
-                .price-transition {
-                    transition: all 2s ease;
-                }
-
-                .hidden {
-                    opacity: 0;
-                    pointer-events: none;
-                }
-
-                .visible {
-                    opacity: 1;
-                }
-            </style>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const cards = document.querySelectorAll('.card');
-
-                    cards.forEach(card => {
-                        const select = card.querySelector('.payment-options');
-                        const originalPrice = card.querySelector('.price-original');
-                        const discountedPrice = card.querySelector('.price-discounted');
-
-                        if (!select || !originalPrice || !discountedPrice) return;
-
-                        // Manejar el cambio de selección
-                        select.addEventListener('change', function () {
-                            if (select.value === 'automatic') {
-                                // Mostrar precio reducido con transición
-                                originalPrice.style.textDecoration = 'line-through';
-                                originalPrice.style.fontSize = '16px';
-                                originalPrice.classList.add('price-transition');
-
-                                discountedPrice.classList.remove('hidden');
-                                discountedPrice.classList.add('visible');
-                                discountedPrice.style.fontSize = '24px';
-                            } else if (select.value === 'single') {
-                                // Mostrar solo el precio original con transición
-                                originalPrice.style.textDecoration = 'none';
-                                originalPrice.style.fontSize = '24px';
-                                originalPrice.classList.add('price-transition');
-
-                                discountedPrice.classList.add('hidden');
-                                discountedPrice.classList.remove('visible');
-                            }
-                        });
-
-                        // Configuración inicial
-                        if (select.value === 'automatic') {
-                            originalPrice.style.textDecoration = 'line-through';
-                            originalPrice.style.fontSize = '16px';
-                            originalPrice.classList.add('price-transition');
-
-                            discountedPrice.classList.remove('hidden');
-                            discountedPrice.classList.add('visible');
-                            discountedPrice.style.fontSize = '24px';
-                        }
-                    });
-                });
-            </script>
 
             @if($plan->unlimited)
                 <p>Sesiones ilimitadas</p>
@@ -167,7 +107,7 @@
                 <input class="form-check-input" type="checkbox" name="aceptacion" id="aceptacion" required>
                 <label class="form-check-label terms-label" for="aceptacion">
                     <small>Acepto el
-                        <a style="text-decoration: none" href="javascript:void(0);" data-toggle="modal" data-target="#modalTerminos">
+                        <a class="view-contract" style="text-decoration: none" href="javascript:void(0);" data-toggle="modal" data-target="#modalTerminos">
                             <b><u>Contrato de Servicio</u></b>
                         </a>
                     </small>
@@ -181,41 +121,3 @@
     </form>
 </div>
 
-@push('modals')
-    <!-- Modal terminos y condiciones-->
-    <div class="modal m-auto" tabindex="-1" role="dialog" id="modalTerminos" style="height: 100vh; width: 75vw; z-index: 1051">
-        <div role="document" class="m-auto h-100 w-100">
-            <div class="modal-content h-100">
-                <div class="modal-header h-100">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <object data="{{asset('pdf/Terminos_y_condiciones_V2-GRL_PWR.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
-                        <embed src="{{asset('pdf/Terminos_y_condiciones_V2-GRL_PWR.pdf')}}" type='application/pdf' width="100%" height="100%" />
-                    </object>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal m-auto" tabindex="-1" role="dialog" id="modalConsentimiento" style="z-index: 1051!important; height: 100vh; width: 75vw;">
-        <div role="document" class="m-auto h-100 w-100">
-            <div class="modal-content h-100">
-                <div class="modal-header h-100">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <object data="{{asset('pdf/Consentimiento_InformadoV2-GRL_PWR.pdf')}}" type="application/pdf" frameborder="0" width="100%" height="100%" style="padding: 20px;">
-                        <embed src="{{asset('pdf/Consentimiento_InformadoV2-GRL_PWR.pdf')}}" type='application/pdf' width="100%" height="100%" />
-                    </object>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-@endpush
