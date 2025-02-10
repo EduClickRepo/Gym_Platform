@@ -24,6 +24,7 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Nombre</th>
                         <th>Amount</th>
                         <th>Fecha</th>
@@ -33,15 +34,18 @@
                     <tbody>
                     @foreach ($positiveValuesMayorCash as $positive)
                         <tr>
-                            <td>{{ $positive->user?->fullName }}</td>
+                            <td>{{ $positive->user?->id}}</td>
+                            <td><a class="client-icon theme-color" href="{{route('visitarPerfil', ['user'=> $positive->user?->slug]) }}"><div style="max-height:3rem; overflow:hidden">{{$positive->user?->fullName}}</div></a></td>
                             <td class="currency">$ {{ number_format($positive->amount, 0, ',', '.') }}</td>
                             <td>{{ $positive->created_at->format('Y-m-d') }}</td>
                             <td>{{ $positive->payment->name }}</td>
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="3">Suma de ingresos</td>
+                        <td colspan="2">Suma de ingresos</td>
                         <td class="currency">$ {{ number_format($positiveMayorCashSum, 0, ',', '.') }}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
@@ -52,6 +56,7 @@
                 <table class="table">
                     <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Nombre</th>
                         <th>Amount</th>
                         <th>Fecha</th>
@@ -61,15 +66,18 @@
                     <tbody>
                     @foreach ($negativeValuesMayorCash as $negative)
                         <tr>
-                            <td>{{ $negative->user?->fullName }}</td>
+                            <td>{{ $negative->user?->id}}</td>
+                            <td><a class="client-icon theme-color" href="{{route('visitarPerfil', ['user'=> $negative->user?->slug]) }}"><div style="max-height:3rem; overflow:hidden">{{$negative->user?->fullName}}</div></a></td>
                             <td class="currency">$ {{ number_format($negative->amount, 0, ',', '.') }}</td>
                             <td>{{ $negative->created_at->format('Y-m-d') }}</td>
                             <td>{{ $negative->payment->name }}</td>
                         </tr>
                     @endforeach
                     <tr>
-                        <td colspan="3">Suma de egresos</td>
+                        <td colspan="2">Suma de egresos</td>
                         <td class="currency">$ {{ number_format($negativeMayorCashSum, 0, ',', '.') }}</td>
+                        <td></td>
+                        <td></td>
                     </tr>
                     </tbody>
                 </table>
