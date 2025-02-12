@@ -17,7 +17,7 @@
                 <div class="modal-body">
                     <p>¿Estás seguro que deseas cancelar el entrenamiento?</p>
                     <br/>
-                    <p id="advertenciaPenalidad">Recuerda que si cancelas con menos de {{ HOURS_TO_CANCEL_TRAINING }} de anticipación no se te devolverá la clase.</p>
+                    <p id="advertenciaPenalidad">Recuerda que si cancelas con menos de {{ HOURS_TO_CANCEL_TRAINING }} horas de anticipación, serás penalizada y no se te devolverá la clase.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-danger">Seguro</button>
