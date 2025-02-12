@@ -40,7 +40,11 @@ class CheckClientPlansExpiration
                 ->get();
 
             $usersInfo->each(function ($info) {
-                $subscription = Subscriptions::where('user_id', $info->user_id)->first();
+                $subscription = Subscriptions::where('user_id', $info->user_id)
+                    ->where(function ($query) {
+                        return $query->where('deleted_at', '>', Carbon::now())
+                            ->orWhereNull('deleted_at');
+                    })->first();
                 if($subscription){
                     $paymentService = app(ProcessPaymentInterface::class);
                     $response = $paymentService->makePayment($subscription->user_id, $subscription->payment_source_id, $subscription->amount, $subscription->currency, $subscription->plan_id, $subscription->user->email);
