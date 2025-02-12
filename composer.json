@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.1",
         "assada/laravel-achievements": "^2.6",
+        "barryvdh/laravel-dompdf": "^3.1",
         "fruitcake/laravel-cors": "^3.0",
         "guzzlehttp/guzzle": "^7.0",
         "jenssegers/date": "^4.0",
